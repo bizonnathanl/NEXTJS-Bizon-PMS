@@ -35,8 +35,8 @@ export default function DashboardPage() {
   ]
 
   const packagesData: PieDataItem[] = [
-    { name: 'Silver', value: 45 },
     { name: 'Gold', value: 30 },
+    { name: 'Silver', value: 45 },
     { name: 'Platinum', value: 15 },
     { name: 'Diamond', value: 10 },
   ]
@@ -51,7 +51,6 @@ export default function DashboardPage() {
       contact: 'contact@example.fr',
       hours: '19h50 / 12h',
     },
-    // … autres lignes …
   ]
 
   return (
@@ -76,11 +75,14 @@ export default function DashboardPage() {
           <MetricCard label="N+1" value="Nicolas HABERT" />
         </div>
 
-        <HoursBarChart data={barData} />
+        <HoursBarChart title="Charge horaire" data={barData} />
 
-        <div className="grid grid-cols-2 gap-4">
-          <ContractsPieChart data={contractsData} />
-          <PackagesPieChart data={packagesData} />
+        <div className="flex flex-col gap-8 mb-16">
+          <h2 className='text-2xl font-anton mb-0'>Clients accompagnés</h2>
+          <div className='flex items-center justify-between gap-8'>
+            <ContractsPieChart title={"Répartition par type de contrat"} data={contractsData} />
+            <PackagesPieChart title={"Répartition par type de package"} data={packagesData} />
+          </div>
         </div>
 
         <div>
