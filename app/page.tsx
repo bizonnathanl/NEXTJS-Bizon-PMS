@@ -58,23 +58,22 @@ export default function DashboardPage() {
     <div className="flex min-h-screen">
       <Sidebar/>
 
-      <main className="flex-1 p-8 space-y-8 overflow-auto">
+      <main className="flex-1 pl-4 space-y-8 overflow-auto">
         <PageHeader
           breadcrumbs={[
-            { label: 'Bizon', href: '/' },
             { label: 'Tableau de bord' },
           ]}
-          title="Bienvenue sur ton tableau de bord Élise :)"
-          subtitle="Consultant Junior · LCS · Depuis le XX/XX/XXXX"
+          title="Bienvenue sur ton tableau de bord Thibaut :)"
+          subtitle="Head of Strategy · LCS · Depuis le 01/01/2025"
         />
 
-        <div className="grid grid-cols-6 gap-4">
+        <div className="flex items-center justify-start gap-2 mb-8">
           <MetricCard label="Clients accompagnés" value={12} />
           <MetricCard label="Contrats en cours" value={26} />
           <MetricCard label="Forfait minimum" value="13 460 €" />
           <MetricCard label="Remplissage" value="72 %" />
           <MetricCard label="Temps restant" value="26 h" />
-          <MetricCard label="N-1" value="Aymeric VURPILLOT" />
+          <MetricCard label="N+1" value="Nicolas HABERT" />
         </div>
 
         <HoursBarChart data={barData} />

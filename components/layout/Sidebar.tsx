@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export function Sidebar() {
   return (
-    <aside className="w-64 card-bg p-6 h-[calc(100vh-2rem)] flex flex-col justify-between rounded-md sticky top-4">
+    <aside className="w-60 card-bg p-6 h-[calc(100vh-2rem)] flex flex-col justify-between rounded-md sticky top-4">
       <div>
         <div className="w-full flex items-center justify-center">
             <img src="/img/Logo_Violet.png" alt="Logo" className="mb-10 w-32" />
