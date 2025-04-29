@@ -1,6 +1,6 @@
 // app/layout.tsx
 import './globals.css'
-import Link from 'next/link'
+import { Sidebar } from '@/components/layout/Sidebar'
 
 export const metadata = {
   title: 'Bizon PMS',
@@ -10,8 +10,9 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr">
-      <body className="min-h-screen flex flex-col bg-light-purple">
-        <main className="flex-1 p-4">{children}</main>
+      <body className="min-h-screen flex bg-light-purple p-4">
+        <Sidebar />
+        <main className="flex-1">{children}</main>
       </body>
     </html>
   )

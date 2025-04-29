@@ -1,9 +1,10 @@
+'use client';
 import React from 'react';
 
 export interface RowData {
   client: string;
   lead: string;
-  marketplace: string;
+  marketplaces: string[];
   contrats: number;
   types: string[];
   contact: string;
@@ -15,41 +16,109 @@ interface DataTableProps {
 }
 
 export function DataTable({ rows }: DataTableProps) {
+  const typeStyles: Record<string, string> = {
+    RO: 'bg-custom-red text-white',
+    RM: 'bg-custom-yellow text-white',
+  };
+
+  console.log('Rows:', rows);
+
+  function parseHourString(str: string): number {
+    const match = str.match(/(\d+)h(\d+)?/);
+    if (!match) return 0;
+    const hours = parseInt(match[1], 10);
+    const minutes = match[2] ? parseInt(match[2], 10) : 0;
+    return hours + minutes / 60;
+  }
+
+  const flagIcons: Record<string, string> = {
+    FR: '/icons/SVG_Flag-FR.svg',
+    UK: '/icons/SVG_Flag-UK.svg',
+    DE: '/icons/SVG_Flag-DE.svg',
+    IT: '/icons/SVG_Flag-IT.svg',
+    ES: '/icons/SVG_Flag-ES.svg',
+    IE: '/icons/SVG_Flag-IE.svg',
+  }
+
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
-          <tr>
-            <th>Client</th>
-            <th>Global Lead</th>
-            <th>Marketplace</th>
-            <th>Contrats</th>
-            <th>Type de contrats</th>
-            <th>Contact Principal</th>
-            <th>Heures Total</th>
+      <table className="min-w-full divide-y divide-gray-200 text-[#09002F] px-2">
+        <thead className="bg-transparent">
+          <tr className="flex items-center justify-between bg-custom-dark text-white font-os mb-2 rounded-md px-2 py-1">
+            <th className="w-32 px-4 py-2 text-left font-os text-14">Client</th>
+            <th className="w-48 px-4 py-2 text-center font-os text-14">Global Lead</th>
+            <th className="w-32 px-4 py-2 text-center font-os text-14">Marketplace</th>
+            <th className="w-20 px-2 py-2 text-center font-os text-14">Contrats</th>
+            <th className="w-48 px-4 py-2 text-center font-os text-14">Type de contrats</th>
+            <th className="w-48 px-4 py-2 text-center font-os text-14">Contact Principal</th>
+            <th className="w-48 px-4 py-2 text-center font-os text-14">Heures Total</th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
-          {rows.map((row, idx) => (
-            <tr key={idx}>
-              <td className="py-2">{row.client}</td>
-              <td>{row.lead}</td>
-              <td>{row.marketplace}</td>
-              <td>{row.contrats}</td>
-              <td className="flex space-x-1">
-                {row.types.map((t) => (
-                  <span
-                    key={t}
-                    className="px-2 py-1 rounded-full bg-purple-100 text-purple-800 text-xs"
-                  >
-                    {t}
+        <tbody className="w-full rounded-md card-bg p-2 inline-block">
+          {rows.map((row, idx) => {
+            const isFirst = idx === 0;
+            const isLast = idx === rows.length - 1;
+            const [actualStr, theoreticalStr] = row.hours
+              .split('/')
+              .map((s) => s.trim());
+            const actual = parseHourString(actualStr);
+            const theoretical = parseHourString(theoreticalStr);
+            const lower = theoretical * 0.9;
+            const upper = theoretical * 1.1;
+            const hoursClass =
+              actual < lower || actual > upper
+                ? 'bg-custom-red text-white'
+                : 'bg-custom-green text-white';
+
+              const cellPadding = `${isFirst ? 'pt-0 pb-3' : 'py-3'} ${isLast ? 'pb-0 pt-3' : 'py-3'}`;
+              const borderClass = `${isLast ? '' : 'border-b-1 border-[#F3F2FF]'}`;
+
+            return (
+              <tr key={idx} className={`flex items-center justify-between  font-os ${cellPadding} ${borderClass}`}>
+                <td className="w-32 px-4 font-anton text-14">{row.client}</td>
+                <td className="w-48 px-4 text-center flex items-center justify-center">
+                  {row.lead === 'Oui' ? (
+                    <span className='font-os text-14 font-bold bg-custom-green text-white px-3 py-1 rounded uppercase leading-5 h-auto block w-fit'>{row.lead}</span>
+                  ) : (
+                    <span className='font-os text-14'>{row.lead}</span> 
+                  )}
+                </td>
+                <td className="w-32 px-4 font-os text-14 text-center flex items-center justify-center gap-1">
+                  {row.marketplaces.map((m) => (
+                    <img
+                      key={m}
+                      src={flagIcons[m] ?? ''}
+                      alt={`Flag ${m}`}
+                      className="w-6 inline-block"
+                    />
+                  ))}
+                </td>
+                <td className="w-20 px-2 font-os text-14 text-center">
+                  {row.contrats}
+                </td>
+                <td className="w-48 px-4 flex space-x-1 justify-center gap-1">
+                  {row.types.map((t) => (
+                    <span
+                      key={t}
+                      className={`px-3 py-1 rounded text-14 font-bold uppercase m-0 leading-5 block h-auto ${
+                        typeStyles[t] ?? 'bg-gray-100 text-gray-800'
+                      }`}
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </td>
+                <td className="w-48 px-4 font-os text-14 text-center">
+                  {row.contact}
+                </td>
+                <td className="w-48 px-4 text-center flex items-center justify-center">
+                  <span className={`px-3 py-[5px] rounded font-bold text-14 leading-5 block w-fit h-auto ${hoursClass}`}>
+                    {row.hours}
                   </span>
-                ))}
-              </td>
-              <td>{row.contact}</td>
-              <td>{row.hours}</td>
-            </tr>
-          ))}
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

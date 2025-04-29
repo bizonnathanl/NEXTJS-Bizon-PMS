@@ -23,7 +23,7 @@ export function ContractsPieChart({
   height = 400,
 }: ContractsPieChartProps) {
   return (
-    <div className='card-bg shadow-none rounded-md py-8 px-8'>
+    <div className='card-bg shadow-none rounded-md py-8 px-8 w-full'>
       <h3 className='font-anton text-20'>{title}</h3>
       <div style={{ width, height }}>
         <ResponsiveContainer>
