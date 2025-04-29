@@ -7,7 +7,7 @@ import { FilterPanel } from '@/components/item/FilterPanel';
 import { HoursBarChart, HoursDataItem } from '@/components/charts/HoursBarChart';
 import { ContractsPieChart, PieDataItem } from '@/components/charts/ContractsPieChart';
 import { PackagesPieChart } from '@/components/charts/PackagesPieChart';
-import { DataTable, RowData } from '@/components/tables/DataTable';
+import { DataTable, RowData } from '@/components/tables/ClientTable-1';
 
 export default function DashboardPage() {
   const barData: HoursDataItem[] = [
@@ -48,6 +48,29 @@ export default function DashboardPage() {
       types: ['RO'],
       contact: 'contact@vermesbv.com',
       hours: '11h30 / 10h',
+      collaborateurs: [
+        {
+          name: 'Nathan LEFETEY',
+          poste: 'Account Manager',
+          grade: 'Assistant',
+          statut: 'Normal',
+          bu: 'GGS'
+        },
+        {
+          name: 'Nathan LEFETEY',
+          poste: 'Account Manager',
+          grade: 'Assistant',
+          statut: 'Normal',
+          bu: 'GGS'
+        },
+        {
+          name: 'Nathan LEFETEY',
+          poste: 'Account Manager',
+          grade: 'Assistant',
+          statut: 'Normal',
+          bu: 'GGS'
+        }
+      ]
     },
     {
       client: 'Lestra',
@@ -57,6 +80,29 @@ export default function DashboardPage() {
       types: ['RM'],
       contact: 'support@lestra.fr',
       hours: '9h00 / 10h',
+      collaborateurs: [
+        {
+          name: 'Nathan LEFETEY',
+          poste: 'Account Manager',
+          grade: 'Assistant',
+          statut: 'Normal',
+          bu: 'GGS'
+        },
+        {
+          name: 'Nathan LEFETEY',
+          poste: 'Account Manager',
+          grade: 'Assistant',
+          statut: 'Normal',
+          bu: 'GGS'
+        },
+        {
+          name: 'Nathan LEFETEY',
+          poste: 'Account Manager',
+          grade: 'Assistant',
+          statut: 'Normal',
+          bu: 'GGS'
+        }
+      ]
     },
     {
       client: 'Cafés Folliet',
@@ -66,6 +112,29 @@ export default function DashboardPage() {
       types: ['RO', 'RM'],
       contact: 'info@cafesfolliet.fr',
       hours: '13h15 / 12h',
+      collaborateurs: [
+        {
+          name: 'Nathan LEFETEY',
+          poste: 'Account Manager',
+          grade: 'Assistant',
+          statut: 'Normal',
+          bu: 'GGS'
+        },
+        {
+          name: 'Nathan LEFETEY',
+          poste: 'Account Manager',
+          grade: 'Assistant',
+          statut: 'Normal',
+          bu: 'GGS'
+        },
+        {
+          name: 'Nathan LEFETEY',
+          poste: 'Account Manager',
+          grade: 'Assistant',
+          statut: 'Normal',
+          bu: 'GGS'
+        }
+      ]
     },
     {
       client: 'Ceva',
@@ -75,6 +144,29 @@ export default function DashboardPage() {
       types: ['RO'],
       contact: 'contact@ceva.com',
       hours: '8h45 / 9h',
+      collaborateurs: [
+        {
+          name: 'Nathan LEFETEY',
+          poste: 'Account Manager',
+          grade: 'Assistant',
+          statut: 'Normal',
+          bu: 'GGS'
+        },
+        {
+          name: 'Nathan LEFETEY',
+          poste: 'Account Manager',
+          grade: 'Assistant',
+          statut: 'Normal',
+          bu: 'GGS'
+        },
+        {
+          name: 'Nathan LEFETEY',
+          poste: 'Account Manager',
+          grade: 'Assistant',
+          statut: 'Normal',
+          bu: 'GGS'
+        }
+      ]
     },
     {
       client: 'Pranarom',
@@ -84,6 +176,29 @@ export default function DashboardPage() {
       types: ['RM'],
       contact: 'hello@pranarom.fr',
       hours: '15h20 / 14h',
+      collaborateurs: [
+        {
+          name: 'Nathan LEFETEY',
+          poste: 'Account Manager',
+          grade: 'Assistant',
+          statut: 'Normal',
+          bu: 'GGS'
+        },
+        {
+          name: 'Nathan LEFETEY',
+          poste: 'Account Manager',
+          grade: 'Assistant',
+          statut: 'Normal',
+          bu: 'GGS'
+        },
+        {
+          name: 'Nathan LEFETEY',
+          poste: 'Account Manager',
+          grade: 'Assistant',
+          statut: 'Normal',
+          bu: 'GGS'
+        }
+      ]
     },
     {
       client: 'Maybelline NY',
@@ -93,6 +208,29 @@ export default function DashboardPage() {
       types: ['RO', 'RM'],
       contact: 'contact@maybellineny.com',
       hours: '10h50 / 11h',
+      collaborateurs: [
+        {
+          name: 'Nathan LEFETEY',
+          poste: 'Account Manager',
+          grade: 'Assistant',
+          statut: 'Normal',
+          bu: 'GGS'
+        },
+        {
+          name: 'Nathan LEFETEY',
+          poste: 'Account Manager',
+          grade: 'Assistant',
+          statut: 'Normal',
+          bu: 'GGS'
+        },
+        {
+          name: 'Nathan LEFETEY',
+          poste: 'Account Manager',
+          grade: 'Assistant',
+          statut: 'Normal',
+          bu: 'GGS'
+        }
+      ]
     },
     {
       client: 'SFA Saniflo',
@@ -102,6 +240,29 @@ export default function DashboardPage() {
       types: ['RO'],
       contact: 'service@saniflo.fr',
       hours: '12h10 / 12h',
+      collaborateurs: [
+        {
+          name: 'Nathan LEFETEY',
+          poste: 'Account Manager',
+          grade: 'Assistant',
+          statut: 'Normal',
+          bu: 'GGS'
+        },
+        {
+          name: 'Nathan LEFETEY',
+          poste: 'Account Manager',
+          grade: 'Assistant',
+          statut: 'Normal',
+          bu: 'GGS'
+        },
+        {
+          name: 'Nathan LEFETEY',
+          poste: 'Account Manager',
+          grade: 'Assistant',
+          statut: 'Normal',
+          bu: 'GGS'
+        }
+      ]
     },
     {
       client: 'Alfapac',
@@ -111,15 +272,29 @@ export default function DashboardPage() {
       types: ['RM'],
       contact: 'sales@alfapac.it',
       hours: '9h30 / 10h',
-    },
-    {
-      client: 'VNM',
-      lead: 'Oui',
-      marketplaces: ['ES', 'UK'],
-      contrats: 8,
-      types: ['RO', 'RM'],
-      contact: 'contact@vnm.es',
-      hours: '14h00 / 13h',
+      collaborateurs: [
+        {
+          name: 'Nathan LEFETEY',
+          poste: 'Account Manager',
+          grade: 'Assistant',
+          statut: 'Normal',
+          bu: 'GGS'
+        },
+        {
+          name: 'Nathan LEFETEY',
+          poste: 'Account Manager',
+          grade: 'Assistant',
+          statut: 'Normal',
+          bu: 'GGS'
+        },
+        {
+          name: 'Nathan LEFETEY',
+          poste: 'Account Manager',
+          grade: 'Assistant',
+          statut: 'Normal',
+          bu: 'GGS'
+        }
+      ]
     },
     {
       client: "Carte d'Or",
@@ -129,6 +304,29 @@ export default function DashboardPage() {
       types: ['RO'],
       contact: 'info@cartedor.fr',
       hours: '7h50 / 8h',
+      collaborateurs: [
+        {
+          name: 'Nathan LEFETEY',
+          poste: 'Account Manager',
+          grade: 'Assistant',
+          statut: 'Normal',
+          bu: 'GGS'
+        },
+        {
+          name: 'Nathan LEFETEY',
+          poste: 'Account Manager',
+          grade: 'Assistant',
+          statut: 'Normal',
+          bu: 'GGS'
+        },
+        {
+          name: 'Nathan LEFETEY',
+          poste: 'Account Manager',
+          grade: 'Assistant',
+          statut: 'Normal',
+          bu: 'GGS'
+        }
+      ]
     }
   ]
 
@@ -139,7 +337,7 @@ export default function DashboardPage() {
     if (filterKey === 'apply') {
       const newRows = tableRows.filter(row => {
         return Object.entries(selections).every(([key, value]) => {
-          if (!value) return true
+          if (!value || key === 'collaborateurs') return true
           const cell = row[key as keyof RowData]
           if (Array.isArray(cell)) {
             return cell.includes(value)
