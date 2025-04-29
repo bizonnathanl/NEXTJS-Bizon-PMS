@@ -20,7 +20,7 @@ interface PageHeaderProps {
 
 export function PageHeader({ breadcrumbs, title, subtitle }: PageHeaderProps) {
   return (
-    <header className="mb-16">
+    <header className="mb-12">
         <div className='flex items-center justify-between mb-12 gap-2'>
             <div className='flex gap-sm items-center w-1/2'>
                 <img src="/icons/SVG_Sidebar-left.svg" alt="Close sidebar" className='w-7 aspect-square text-dark'/>

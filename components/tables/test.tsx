@@ -1,5 +1,14 @@
+// components/tables/DataTable.tsx
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
+
+export interface Collaborateur {
+  name: string;
+  poste: string;
+  grade: string;
+  statut: string;
+  bu: string;
+}
 
 export interface RowData {
   client: string;
@@ -9,6 +18,7 @@ export interface RowData {
   types: string[];
   contact: string;
   hours: string;
+  collaborateurs?: Collaborateur[];
 }
 
 interface DataTableProps {
@@ -16,29 +26,33 @@ interface DataTableProps {
 }
 
 export function DataTable({ rows }: DataTableProps) {
+  const [expanded, setExpanded] = useState<Set<number>>(new Set());
+
+  const toggleRow = (idx: number) => {
+    const s = new Set(expanded);
+    s.has(idx) ? s.delete(idx) : s.add(idx);
+    setExpanded(s);
+  };
+
+  function parseHourString(str: string): number {
+    const m = str.match(/(\d+)h(\d+)?/);
+    if (!m) return 0;
+    return parseInt(m[1],10) + (m[2]? parseInt(m[2],10)/60 : 0);
+  }
+
   const typeStyles: Record<string, string> = {
     RO: 'bg-custom-red text-white',
     RM: 'bg-custom-yellow text-white',
   };
 
-  console.log('Rows:', rows);
-
-  function parseHourString(str: string): number {
-    const match = str.match(/(\d+)h(\d+)?/);
-    if (!match) return 0;
-    const hours = parseInt(match[1], 10);
-    const minutes = match[2] ? parseInt(match[2], 10) : 0;
-    return hours + minutes / 60;
-  }
-
-  const flagIcons: Record<string, string> = {
-    FR: '/icons/SVG_Flag-FR.svg',
-    UK: '/icons/SVG_Flag-UK.svg',
-    DE: '/icons/SVG_Flag-DE.svg',
-    IT: '/icons/SVG_Flag-IT.svg',
-    ES: '/icons/SVG_Flag-ES.svg',
-    IE: '/icons/SVG_Flag-IE.svg',
-  }
+  const flagIcons: Record<string,string> = {
+    FR:'/icons/SVG_Flag-FR.svg',
+    UK:'/icons/SVG_Flag-UK.svg',
+    DE:'/icons/SVG_Flag-DE.svg',
+    IT:'/icons/SVG_Flag-IT.svg',
+    ES:'/icons/SVG_Flag-ES.svg',
+    IE:'/icons/SVG_Flag-IE.svg',
+  };
 
   return (
     <div className="overflow-x-auto">

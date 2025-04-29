@@ -6,6 +6,8 @@ import {
   Select,
   SelectTrigger,
   SelectValue,
+  SelectGroup,
+  SelectLabel,
   SelectContent,
   SelectItem,
 } from '@/components/ui/select';
@@ -60,29 +62,41 @@ export function FilterPanel({
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-4 mb-4">
-      {filters.map(({ label, key }) => (
-        <div key={key} className="w-40">
-          <Select
-            value={selections[key]}
-            onValueChange={(val) => handleChange(key, val)}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder={label} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">{label}</SelectItem>
-              {optionsMap[key].map((opt) => (
-                <SelectItem key={opt} value={opt}>
-                  {opt}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      ))}
+    <div className="flex items-center justify-between mb-4">
+      <div className='flex items-center justify-start gap-4'>
+        {filters.map(({ label, key }) => (
+          <div key={key} className="w-44">
+            <Select
+              value={selections[key]}
+              onValueChange={(val) => handleChange(key, val)}
+            >
+              <SelectTrigger className="w-full card-bg font-bold rounded-md py-2 px-3 text-sm placeholder-gray-500 focus select-input shadow-none border-none" >
+                <SelectValue placeholder={label} />
+              </SelectTrigger>
+              <SelectContent
+                position="popper"
+                sideOffset={5}
+                align="start" 
+                className="z-50 bg-white rounded-md shadow-lg"
+              >
+                <SelectGroup>
+                  <SelectLabel>{label}</SelectLabel>
+                  <SelectItem value="all" className="text-sm py-2 px-3 hover:bg-[#F3F2FF]">Tous</SelectItem>
+                  {optionsMap[key].map((opt) => (
+                    <SelectItem key={opt} value={opt} className="text-sm py-2 px-3 hover:bg-[#F3F2FF]">
+                      {opt}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+        ))}
+        
+      </div>
 
-      <Button size="sm" onClick={() => onFilterChange?.('apply', undefined)}>
+      <Button size="sm" onClick={() => onFilterChange?.('apply', undefined)} className="cta-purple text-white font-bold rounded-md px-6 py-2 h-auto"
+      >
         Filtrer
       </Button>
     </div>
