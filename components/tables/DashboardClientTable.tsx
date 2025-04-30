@@ -1,16 +1,9 @@
 // components/tables/DataTable.tsx
 "use client";
 import React, { useState } from "react";
+import { Collaborator } from "@/interfaces/Collaborator";
 
-export interface Collaborateur {
-  name: string;
-  poste: string;
-  grade: string;
-  statut: string;
-  bu: string;
-}
-
-export interface RowData {
+export interface ClientRowData {
   client: string;
   lead: string;
   marketplaces: string[];
@@ -18,14 +11,14 @@ export interface RowData {
   types: string[];
   contact: string;
   hours: string;
-  collaborateurs?: Collaborateur[];
+  collaborators?: Collaborator[];
 }
 
 interface DataTableProps {
-  rows: RowData[];
+  rows: ClientRowData[];
 }
 
-export function DataTable({ rows }: DataTableProps) {
+export function ClientDataTable({ rows }: DataTableProps) {
   const [expanded, setExpanded] = useState<Set<number>>(new Set());
 
   const toggleRow = (idx: number) => {
@@ -153,7 +146,7 @@ export function DataTable({ rows }: DataTableProps) {
                   </td>
                 </tr>
 
-                {row.collaborateurs && expanded.has(idx) && (
+                {row.collaborators && expanded.has(idx) && (
                   <tr className="flex w-full bg-white mb-2 rounded-md">
                     <td className="w-full px-4 py-3" colSpan={7}>
                       <div className="font-os text-sm">
@@ -176,35 +169,37 @@ export function DataTable({ rows }: DataTableProps) {
                         </div>
 
                         <div>
-                          {row.collaborateurs.map((c, i) => (
+                          {row.collaborators.map((c, i) => (
                             <React.Fragment key={i}>
                               <div className="flex items-center justify-between mt-2">
-                                <div className="w-48 text-left">{c.name}</div>
-                                <div className="w-48 text-center">
-                                  {c.poste}
+                                <div className="w-48 text-left">
+                                  {c.first_name} {c.last_name}
                                 </div>
                                 <div className="w-48 text-center">
-                                  {c.grade}
+                                  {c.job_title}
+                                </div>
+                                <div className="w-48 text-center">
+                                  {c.rank.title}
                                 </div>
                                 <div className="w-48 text-center">
                                   {c.statut}
                                 </div>
                                 <div className="w-48 flex items-center justify-center">
-                                  {c.bu === "GGS" ? (
+                                  {c.business_unit === "GGS" ? (
                                     <span className="px-2 py-1 rounded text-xs bg-custom-green text-white">
-                                      {c.bu}
+                                      {c.business_unit}
                                     </span>
-                                  ) : c.bu === "LCS" ? (
+                                  ) : c.business_unit === "LCS" ? (
                                     <span className="px-2 py-1 rounded text-xs bg-custom-red text-white">
-                                      {c.bu}
+                                      {c.business_unit}
                                     </span>
-                                  ) : c.bu === "MEDIA" ? (
+                                  ) : c.business_unit === "MEDIA" ? (
                                     <span className="px-2 py-1 rounded text-xs bg-custom-yellow text-white">
-                                      {c.bu}
+                                      {c.business_unit}
                                     </span>
                                   ) : (
                                     <span className="px-2 py-1 rounded text-xs bg-gray text-white">
-                                      {c.bu}
+                                      {c.business_unit}
                                     </span>
                                   )}
                                 </div>

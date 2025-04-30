@@ -7,7 +7,14 @@ import {
   CustomPieChart,
   CustomPieDataItem,
 } from "@/components/charts/CustomPieChart";
-import { DataTable, RowData } from "@/components/tables/DashboardClientTable";
+import {
+  ClientDataTable,
+  ClientRowData,
+} from "@/components/tables/DashboardClientTable";
+import { CollaboratorDataTable } from "@/components/tables/ListCollaboratorTable";
+import { Collaborator } from "@/interfaces/Collaborator";
+import * as Collaborators from "@/data/Collaborators";
+
 import { SmoothLineChart } from "@/components/charts/SmoothLineChart";
 import { SteppedLineChart } from "@/components/charts/SteppedLineChart";
 
@@ -23,8 +30,7 @@ interface UnitDataItem {
   realHours: number;
   theoricalFilling: number;
   realFilling: number;
-  theoricalInvocing: number;
-  realInvocing: number;
+  invoicing: number;
   clients: number;
   contracts: number;
   remainingTime: number;
@@ -43,17 +49,12 @@ export default function DashboardPage() {
     realHours: 69,
     theoricalFilling: 1,
     realFilling: 0.96,
-    theoricalInvocing: 133460,
-    realInvocing: 153460,
+    invoicing: 133460,
     clients: 56,
     contracts: 149,
     remainingTime: 20,
   };
 
-  let facturationTagColor: string =
-    unitData.realInvocing > unitData.theoricalInvocing
-      ? "bg-custom-green"
-      : "bg-custom-red";
   let marginTagColor: string =
     unitData.realMargin > 0.7 ? "bg-custom-green" : "bg-custom-red";
   let hoursTagColor: string =
@@ -105,6 +106,14 @@ export default function DashboardPage() {
     { name: "Confirmé 1", value: 9 },
     { name: "Confirmé 2", value: 10 },
     { name: "Assistant", value: 14 },
+  ];
+
+  const rowData: Collaborator[] = [
+    Collaborators.NATHAN,
+    Collaborators.ELISE,
+    Collaborators.ARNAUD,
+    Collaborators.THIBAUT,
+    Collaborators.AYMERIC,
   ];
   return (
     <div className="flex min-h-screen">
@@ -165,15 +174,10 @@ export default function DashboardPage() {
               <td className="w-fit flex items-center justify-center">
                 <div className="flex flex-col justify-center items-center gap-2">
                   <span className="text-14 font-os font-bold mb-0">
-                    Facturation
+                    Facturation totale
                   </span>
-                  <span
-                    className={`text-16 text-white px-2 py-1 rounded ${facturationTagColor}`}>
-                    {unitData.realInvocing.toLocaleString("fr-FR", {
-                      maximumFractionDigits: 2,
-                    })}{" "}
-                    € /{" "}
-                    {unitData.theoricalInvocing.toLocaleString("fr-FR", {
+                  <span className="text-16 text-dark font-light">
+                    {unitData.invoicing.toLocaleString("fr-FR", {
                       maximumFractionDigits: 2,
                     })}{" "}
                     €

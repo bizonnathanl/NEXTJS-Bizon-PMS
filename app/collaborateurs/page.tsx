@@ -2,82 +2,20 @@
 import React, { useState } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { FilterPanel } from "@/components/item/CollaborateurFilters";
-import {
-  DataTable,
-  Collaborateur,
-} from "@/components/tables/ListCollaboratorTable";
+import { CollaboratorDataTable } from "@/components/tables/ListCollaboratorTable";
+import { Collaborator } from "@/interfaces/Collaborator";
+import * as Collaborators from "@/data/Collaborators";
 
 export default function DashboardPage() {
-  const rowData: Collaborateur[] = [
-    {
-      picture: "/workers/Thibaut_TRIKI.png",
-      name: "Thibaut TRIKI",
-      langues: ["FR", "UK"],
-      poste: "Head of Strategy",
-      grade: "Directeur",
-      statut: "Directeur",
-      bu: "LCS",
-      clients: 5,
-      contrats: 3,
-    },
-    {
-      picture: "/workers/Thibaut_TRIKI.png",
-      name: "Thibaut TRIKI",
-      langues: ["FR", "UK"],
-      poste: "Head of Strategy",
-      grade: "Directeur",
-      statut: "Directeur",
-      bu: "LCS",
-      clients: 5,
-      contrats: 3,
-    },
-    {
-      picture: "/workers/Thibaut_TRIKI.png",
-      name: "Thibaut TRIKI",
-      langues: ["FR", "UK"],
-      poste: "Head of Strategy",
-      grade: "Directeur",
-      statut: "Directeur",
-      bu: "LCS",
-      clients: 5,
-      contrats: 3,
-    },
-    {
-      picture: "/workers/Thibaut_TRIKI.png",
-      name: "Thibaut TRIKI",
-      langues: ["FR", "UK"],
-      poste: "Head of Strategy",
-      grade: "Directeur",
-      statut: "Directeur",
-      bu: "LCS",
-      clients: 5,
-      contrats: 3,
-    },
-    {
-      picture: "/workers/Thibaut_TRIKI.png",
-      name: "Thibaut TRIKI",
-      langues: ["FR", "UK"],
-      poste: "Head of Strategy",
-      grade: "Directeur",
-      statut: "Directeur",
-      bu: "LCS",
-      clients: 5,
-      contrats: 3,
-    },
-    {
-      picture: "/workers/Thibaut_TRIKI.png",
-      name: "Thibaut TRIKI",
-      langues: ["FR", "UK"],
-      poste: "Head of Strategy",
-      grade: "Directeur",
-      statut: "Directeur",
-      bu: "LCS",
-      clients: 5,
-      contrats: 3,
-    },
+  const rowData: Collaborator[] = [
+    Collaborators.ARNAUD,
+    Collaborators.AYMERIC,
+    Collaborators.ELISE,
+    Collaborators.NATHAN,
+    Collaborators.THIBAUT,
   ];
 
-  const [filteredRows, setFilteredRows] = useState<Collaborateur[]>(rowData);
+  const [filteredRows, setFilteredRows] = useState<Collaborator[]>(rowData);
   const [selections, setSelections] = useState<
     Record<string, string | undefined>
   >({});
@@ -90,7 +28,7 @@ export default function DashboardPage() {
       const newRows = rowData.filter((row) => {
         return Object.entries(selections).every(([key, value]) => {
           if (!value || key === "collaborateurs") return true;
-          const cell = row[key as keyof Collaborateur];
+          const cell = row[key as keyof Collaborator];
           if (Array.isArray(cell)) {
             if (cell.length === 0 || typeof cell[0] === "string") {
               return (cell as string[]).includes(value);
@@ -120,7 +58,7 @@ export default function DashboardPage() {
 
         <div>
           <FilterPanel rows={rowData} onFilterChange={handleFilterChange} />
-          <DataTable rows={filteredRows} />
+          <CollaboratorDataTable rows={filteredRows} />
         </div>
       </main>
     </div>

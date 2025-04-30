@@ -11,7 +11,14 @@ import {
   CustomPieChart,
   CustomPieDataItem,
 } from "@/components/charts/CustomPieChart";
-import { DataTable, RowData } from "@/components/tables/DashboardClientTable";
+import {
+  ClientDataTable,
+  ClientRowData,
+} from "@/components/tables/DashboardClientTable";
+
+import { Collaborator } from "@/interfaces/Collaborator";
+import * as Collaborators from "@/data/Collaborators";
+import * as Ranks from "@/data/Ranks";
 
 interface UserData {
   first_name: string;
@@ -23,6 +30,17 @@ interface UserData {
   tempsRestant: number;
   n1: string;
 }
+
+const defaultManager: Collaborator = {
+  first_name: "Nicolas",
+  last_name: "HABERT",
+  languages: ["FR"],
+  job_title: "Director",
+  rank: Ranks.DIRECTOR,
+  statut: "Active",
+  business_unit: "GGS",
+  manager: {} as Collaborator,
+};
 
 export default function DashboardPage() {
   const userData = {
@@ -65,7 +83,7 @@ export default function DashboardPage() {
     { name: "Diamond", value: 10 },
   ];
 
-  const rowData: RowData[] = [
+  const rowData: ClientRowData[] = [
     {
       client: "Vermes BV",
       lead: "Oui",
@@ -74,28 +92,10 @@ export default function DashboardPage() {
       types: ["RO"],
       contact: "contact@vermesbv.com",
       hours: "11h30 / 10h",
-      collaborateurs: [
-        {
-          name: "Nathan LEFETEY",
-          poste: "Account Manager",
-          grade: "Assistant",
-          statut: "Normal",
-          bu: "GGS",
-        },
-        {
-          name: "Nathan LEFETEY",
-          poste: "Account Manager",
-          grade: "Assistant",
-          statut: "Normal",
-          bu: "GGS",
-        },
-        {
-          name: "Nathan LEFETEY",
-          poste: "Account Manager",
-          grade: "Assistant",
-          statut: "Normal",
-          bu: "GGS",
-        },
+      collaborators: [
+        Collaborators.NATHAN,
+        Collaborators.ARNAUD,
+        Collaborators.THIBAUT,
       ],
     },
     {
@@ -106,28 +106,10 @@ export default function DashboardPage() {
       types: ["RM"],
       contact: "support@lestra.fr",
       hours: "9h00 / 10h",
-      collaborateurs: [
-        {
-          name: "Nathan LEFETEY",
-          poste: "Account Manager",
-          grade: "Assistant",
-          statut: "Normal",
-          bu: "GGS",
-        },
-        {
-          name: "Nathan LEFETEY",
-          poste: "Account Manager",
-          grade: "Assistant",
-          statut: "Normal",
-          bu: "GGS",
-        },
-        {
-          name: "Nathan LEFETEY",
-          poste: "Account Manager",
-          grade: "Assistant",
-          statut: "Normal",
-          bu: "GGS",
-        },
+      collaborators: [
+        Collaborators.ELISE,
+        Collaborators.AYMERIC,
+        Collaborators.THIBAUT,
       ],
     },
     {
@@ -138,225 +120,16 @@ export default function DashboardPage() {
       types: ["RO", "RM"],
       contact: "info@cafesfolliet.fr",
       hours: "13h15 / 12h",
-      collaborateurs: [
-        {
-          name: "Nathan LEFETEY",
-          poste: "Account Manager",
-          grade: "Assistant",
-          statut: "Normal",
-          bu: "GGS",
-        },
-        {
-          name: "Nathan LEFETEY",
-          poste: "Account Manager",
-          grade: "Assistant",
-          statut: "Normal",
-          bu: "GGS",
-        },
-        {
-          name: "Nathan LEFETEY",
-          poste: "Account Manager",
-          grade: "Assistant",
-          statut: "Normal",
-          bu: "GGS",
-        },
-      ],
-    },
-    {
-      client: "Ceva",
-      lead: "Eva LEULEU",
-      marketplaces: ["DE", "IT"],
-      contrats: 10,
-      types: ["RO"],
-      contact: "contact@ceva.com",
-      hours: "8h45 / 9h",
-      collaborateurs: [
-        {
-          name: "Nathan LEFETEY",
-          poste: "Account Manager",
-          grade: "Assistant",
-          statut: "Normal",
-          bu: "GGS",
-        },
-        {
-          name: "Nathan LEFETEY",
-          poste: "Account Manager",
-          grade: "Assistant",
-          statut: "Normal",
-          bu: "GGS",
-        },
-        {
-          name: "Nathan LEFETEY",
-          poste: "Account Manager",
-          grade: "Assistant",
-          statut: "Normal",
-          bu: "GGS",
-        },
-      ],
-    },
-    {
-      client: "Pranarom",
-      lead: "Oui",
-      marketplaces: ["FR", "IT"],
-      contrats: 14,
-      types: ["RM"],
-      contact: "hello@pranarom.fr",
-      hours: "15h20 / 14h",
-      collaborateurs: [
-        {
-          name: "Nathan LEFETEY",
-          poste: "Account Manager",
-          grade: "Assistant",
-          statut: "Normal",
-          bu: "GGS",
-        },
-        {
-          name: "Nathan LEFETEY",
-          poste: "Account Manager",
-          grade: "Assistant",
-          statut: "Normal",
-          bu: "GGS",
-        },
-        {
-          name: "Nathan LEFETEY",
-          poste: "Account Manager",
-          grade: "Assistant",
-          statut: "Normal",
-          bu: "GGS",
-        },
-      ],
-    },
-    {
-      client: "Maybelline NY",
-      lead: "Eva LEULEU",
-      marketplaces: ["UK", "FR", "ES"],
-      contrats: 9,
-      types: ["RO", "RM"],
-      contact: "contact@maybellineny.com",
-      hours: "10h50 / 11h",
-      collaborateurs: [
-        {
-          name: "Nathan LEFETEY",
-          poste: "Account Manager",
-          grade: "Assistant",
-          statut: "Normal",
-          bu: "GGS",
-        },
-        {
-          name: "Nathan LEFETEY",
-          poste: "Account Manager",
-          grade: "Assistant",
-          statut: "Normal",
-          bu: "GGS",
-        },
-        {
-          name: "Nathan LEFETEY",
-          poste: "Account Manager",
-          grade: "Assistant",
-          statut: "Normal",
-          bu: "GGS",
-        },
-      ],
-    },
-    {
-      client: "SFA Saniflo",
-      lead: "Oui",
-      marketplaces: ["FR", "DE"],
-      contrats: 6,
-      types: ["RO"],
-      contact: "service@saniflo.fr",
-      hours: "12h10 / 12h",
-      collaborateurs: [
-        {
-          name: "Nathan LEFETEY",
-          poste: "Account Manager",
-          grade: "Assistant",
-          statut: "Normal",
-          bu: "GGS",
-        },
-        {
-          name: "Nathan LEFETEY",
-          poste: "Account Manager",
-          grade: "Assistant",
-          statut: "Normal",
-          bu: "GGS",
-        },
-        {
-          name: "Nathan LEFETEY",
-          poste: "Account Manager",
-          grade: "Assistant",
-          statut: "Normal",
-          bu: "GGS",
-        },
-      ],
-    },
-    {
-      client: "Alfapac",
-      lead: "Arnaud JARROT",
-      marketplaces: ["IT", "FR"],
-      contrats: 11,
-      types: ["RM"],
-      contact: "sales@alfapac.it",
-      hours: "9h30 / 10h",
-      collaborateurs: [
-        {
-          name: "Nathan LEFETEY",
-          poste: "Account Manager",
-          grade: "Assistant",
-          statut: "Normal",
-          bu: "GGS",
-        },
-        {
-          name: "Nathan LEFETEY",
-          poste: "Account Manager",
-          grade: "Assistant",
-          statut: "Normal",
-          bu: "GGS",
-        },
-        {
-          name: "Nathan LEFETEY",
-          poste: "Account Manager",
-          grade: "Assistant",
-          statut: "Normal",
-          bu: "GGS",
-        },
-      ],
-    },
-    {
-      client: "Carte d'Or",
-      lead: "Aymeric VURPILLOT",
-      marketplaces: ["FR", "IT", "DE"],
-      contrats: 13,
-      types: ["RO"],
-      contact: "info@cartedor.fr",
-      hours: "7h50 / 8h",
-      collaborateurs: [
-        {
-          name: "Nathan LEFETEY",
-          poste: "Account Manager",
-          grade: "Assistant",
-          statut: "Normal",
-          bu: "GGS",
-        },
-        {
-          name: "Nathan LEFETEY",
-          poste: "Account Manager",
-          grade: "Assistant",
-          statut: "Normal",
-          bu: "GGS",
-        },
-        {
-          name: "Nathan LEFETEY",
-          poste: "Account Manager",
-          grade: "Assistant",
-          statut: "Normal",
-          bu: "GGS",
-        },
+      collaborators: [
+        Collaborators.NATHAN,
+        Collaborators.ARNAUD,
+        Collaborators.ELISE,
+        Collaborators.AYMERIC,
       ],
     },
   ];
 
-  const [filteredRows, setFilteredRows] = useState<RowData[]>(rowData);
+  const [filteredRows, setFilteredRows] = useState<ClientRowData[]>(rowData);
   const [selections, setSelections] = useState<
     Record<string, string | undefined>
   >({});
@@ -369,7 +142,7 @@ export default function DashboardPage() {
       const newRows = rowData.filter((row) => {
         return Object.entries(selections).every(([key, value]) => {
           if (!value || key === "collaborateurs") return true;
-          const cell = row[key as keyof RowData];
+          const cell = row[key as keyof ClientRowData];
           if (Array.isArray(cell)) {
             if (cell.length === 0 || typeof cell[0] === "string") {
               return (cell as string[]).includes(value);
@@ -437,7 +210,7 @@ export default function DashboardPage() {
 
         <div>
           <FilterPanel rows={rowData} onFilterChange={handleFilterChange} />
-          <DataTable rows={filteredRows} />
+          <ClientDataTable rows={filteredRows} />
         </div>
       </main>
     </div>

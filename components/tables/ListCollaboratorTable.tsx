@@ -1,24 +1,13 @@
 // components/tables/DataTable.tsx
 "use client";
 import React, { useState } from "react";
-
-export interface Collaborateur {
-  picture: string;
-  name: string;
-  langues: string[];
-  poste: string;
-  grade: string;
-  statut: string;
-  bu: string;
-  clients: number;
-  contrats: number;
-}
+import { Collaborator } from "@/interfaces/Collaborator";
 
 interface DataTableProps {
-  rows: Collaborateur[];
+  rows: Collaborator[];
 }
 
-export function DataTable({ rows }: DataTableProps) {
+export function CollaboratorDataTable({ rows }: DataTableProps) {
   const buStyles: Record<string, string> = {
     LCS: "bg-custom-red text-white",
     GGS: "bg-custom-green text-white",
@@ -39,7 +28,7 @@ export function DataTable({ rows }: DataTableProps) {
       <table className="min-w-full divide-y divide-gray-200 text-[#09002F] px-2">
         <thead className="bg-transparent">
           <tr className="flex items-center justify-between bg-custom-dark text-white font-os mb-2 rounded-md px-2 py-1">
-            <th className="w-40 px-4 py-2 text-left font-os text-14">
+            <th className="w-52 px-4 py-2 text-left font-os text-14">
               Collaboreteur
             </th>
             <th className="w-40 px-4 py-2 text-center font-os text-14">
@@ -79,21 +68,20 @@ export function DataTable({ rows }: DataTableProps) {
 
             return (
               <React.Fragment key={idx}>
-                {/* Ligne principale */}
                 <tr
                   className={`flex items-center justify-between font-os cursor-pointer ${cellPadding} ${borderClass}`}>
-                  <td className="w-40 px-4 font-anton text-14">
+                  <td className="w-52 px-4 font-anton text-14">
                     <div className="flex items-center">
                       <img
                         src={row.picture}
-                        alt={row.name}
+                        alt={`${row.first_name} ${row.last_name}`}
                         className="w-10 h-10 rounded-sm mr-2"
                       />
-                      {row.name}
+                      {row.first_name} {row.last_name}
                     </div>
                   </td>
                   <td className="w-40 px-4 font-os text-14 text-center flex items-center justify-center gap-1">
-                    {row.langues.map((m) => (
+                    {row.languages.map((m) => (
                       <img
                         key={m}
                         src={flagIcons[m] ?? ""}
@@ -103,28 +91,69 @@ export function DataTable({ rows }: DataTableProps) {
                     ))}
                   </td>
                   <td className="w-48 px-2 font-os text-14 text-center">
-                    {row.poste}
+                    {row.job_title}
                   </td>
                   <td className="w-40 px-2 font-os text-14 text-center">
-                    {row.grade}
+                    {row.rank.title}
                   </td>
                   <td className="w-40 px-2 font-os text-14 text-center">
                     {row.statut}
                   </td>
                   <td className="w-40 px-4 flex space-x-1 justify-center gap-1">
                     <span
-                      key={row.bu}
+                      key={row.business_unit}
                       className={`px-3 py-1 rounded text-14 uppercase m-0 leading-5 block h-auto ${
-                        buStyles[row.bu] ?? "bg-gray-100 text-gray-800"
+                        buStyles[row.business_unit] ??
+                        "bg-gray-100 text-gray-800"
                       }`}>
-                      {row.bu}
+                      {row.business_unit}
                     </span>
                   </td>
                   <td className="w-20 px-4 font-os text-14 text-center">
-                    {row.clients}
+                    {(() => {
+                      const count = row.client?.length ?? 0;
+                      const isPositive = count > 0;
+                      return (
+                        <span
+                          className={`
+                          block w-fit uppercase leading-5
+                          px-3 py-1 rounded
+                          font-os text-14
+                          ${
+                            isPositive
+                              ? "bg-custom-green text-white"
+                              : "text-[#09002F]" /* ou votre couleur par défaut */
+                          }
+                        `}>
+                          {count}
+                        </span>
+                      );
+                    })()}
                   </td>
                   <td className="w-20 px-4 font-os text-14 text-center">
-                    {row.contrats}
+                    {(() => {
+                      const clients = row.client ?? [];
+                      const count = clients.reduce(
+                        (sum, client) => sum + (client.documents?.length ?? 0),
+                        0
+                      );
+                      const isPositive = count > 0;
+                      return (
+                        <span
+                          className={`
+                          block w-fit uppercase leading-5
+                          px-3 py-1 rounded
+                          font-os text-14
+                          ${
+                            isPositive
+                              ? "bg-custom-green text-white"
+                              : "text-[#09002F]"
+                          }
+                        `}>
+                          {count}
+                        </span>
+                      );
+                    })()}
                   </td>
                 </tr>
               </React.Fragment>
