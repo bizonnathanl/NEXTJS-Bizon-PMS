@@ -1,5 +1,5 @@
 import { Collaborator } from "@/interfaces/Collaborator";
-import * as Ranks from "@/data/Ranks";
+import * as Ranks from "./Ranks";
 
 export const THIBAUT: Collaborator = {
   picture: "/workers/Thibaut_Triki.png",
@@ -10,6 +10,17 @@ export const THIBAUT: Collaborator = {
   rank: Ranks.DIRECTOR,
   statut: "Directeur",
   business_unit: "LCS",
+};
+
+export const MATTHIEU: Collaborator = {
+  picture: "/workers/Thibaut_Triki.png",
+  first_name: "Matthieu",
+  last_name: "LAURANT",
+  languages: ["FR", "UK"],
+  job_title: "Internation Business Developer",
+  rank: Ranks.DIRECTOR,
+  statut: "Directeur",
+  business_unit: "SALES",
 };
 
 export const ARNAUD: Collaborator = {

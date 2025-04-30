@@ -12,7 +12,7 @@ export interface Client {
   global_lead_1: Collaborator;
   global_lead_2?: Collaborator;
   email?: string;
-  details: ClientDetails;
+  details?: ClientDetails;
   expenses?: Expenses[];
   documents?: Document[];
   collaborators?: Collaborator[];
