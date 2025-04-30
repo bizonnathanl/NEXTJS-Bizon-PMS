@@ -1,48 +1,61 @@
+// components/charts/SteppedLineChart.tsx
 "use client";
 import React from "react";
 import {
   ResponsiveContainer,
-  BarChart,
+  LineChart,
   XAxis,
   YAxis,
   Tooltip,
   Legend,
-  Bar,
+  CartesianGrid,
+  Line,
 } from "recharts";
 
-export interface HoursDataItem {
+export interface StepDataItem {
+  [key: string]: string | number;
   month: string;
-  theoretical: number;
-  actual: number;
 }
 
-interface HoursBarChartProps {
+interface SteppedLineChartProps {
   title: string;
-  data: HoursDataItem[];
+  data: StepDataItem[];
+  lines: Array<{
+    dataKey: string;
+    name: string;
+    color: string;
+  }>;
   width?: string | number;
   height?: string | number;
 }
 
-export function HoursBarChart({
+export function SteppedLineChart({
   title,
   data,
+  lines,
   width = "100%",
-  height = 500,
-}: HoursBarChartProps) {
+  height = 450,
+}: SteppedLineChartProps) {
   return (
     <div
       style={{ width, height }}
-      className="card-bg shadow-none rounded-md py-8 px-8 pb-20 mb-16">
+      className="card-bg shadow-none rounded-md pt-8 px-8  pb-20">
       <h3 className="font-anton text-20 mb-8">{title}</h3>
       <ResponsiveContainer>
-        <BarChart
+        <LineChart
           data={data}
           margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
+          <CartesianGrid
+            strokeDasharray="4 4"
+            horizontal={true}
+            vertical={false}
+          />
           <XAxis
             dataKey="month"
             tickLine={false}
             axisLine={false}
             className="font-os text-12 text-dark"
+            padding={{ right: 10, left: 10 }}
             tick={{ fontSize: 12, fill: "#09002F" }}
           />
           <YAxis
@@ -55,18 +68,20 @@ export function HoursBarChart({
           <Legend
             iconType="square"
             iconSize={10}
-            formatter={(value) => (
-              <span style={{ color: "#09002F" }}>{value}</span>
-            )}
+            formatter={(val) => <span style={{ color: "#09002F" }}>{val}</span>}
           />
-          <Bar
-            dataKey="theoretical"
-            name="Théorique"
-            fill="#7C67FF"
-            unit={"h"}
-          />
-          <Bar dataKey="actual" name="Réel" fill="#5EFBFB" unit={"h"} />
-        </BarChart>
+          {lines.map((l) => (
+            <Line
+              key={l.dataKey}
+              type="step"
+              dataKey={l.dataKey}
+              name={l.name}
+              stroke={l.color}
+              dot={{ r: 4 }}
+              strokeWidth={2}
+            />
+          ))}
+        </LineChart>
       </ResponsiveContainer>
     </div>
   );

@@ -1,6 +1,6 @@
 // components/tables/DataTable.tsx
-'use client';
-import React, { useState } from 'react';
+"use client";
+import React, { useState } from "react";
 
 export interface Collaborateur {
   name: string;
@@ -37,21 +37,21 @@ export function DataTable({ rows }: DataTableProps) {
   function parseHourString(str: string): number {
     const m = str.match(/(\d+)h(\d+)?/);
     if (!m) return 0;
-    return parseInt(m[1],10) + (m[2]? parseInt(m[2],10)/60 : 0);
+    return parseInt(m[1], 10) + (m[2] ? parseInt(m[2], 10) / 60 : 0);
   }
 
   const typeStyles: Record<string, string> = {
-    RO: 'bg-custom-red text-white',
-    RM: 'bg-custom-yellow text-white',
+    RO: "bg-custom-red text-white",
+    RM: "bg-custom-yellow text-white",
   };
 
-  const flagIcons: Record<string,string> = {
-    FR:'/icons/SVG_Flag-FR.svg',
-    UK:'/icons/SVG_Flag-UK.svg',
-    DE:'/icons/SVG_Flag-DE.svg',
-    IT:'/icons/SVG_Flag-IT.svg',
-    ES:'/icons/SVG_Flag-ES.svg',
-    IE:'/icons/SVG_Flag-IE.svg',
+  const flagIcons: Record<string, string> = {
+    FR: "/icons/SVG_Flag-FR.svg",
+    UK: "/icons/SVG_Flag-UK.svg",
+    DE: "/icons/SVG_Flag-DE.svg",
+    IT: "/icons/SVG_Flag-IT.svg",
+    ES: "/icons/SVG_Flag-ES.svg",
+    IE: "/icons/SVG_Flag-IE.svg",
   };
 
   return (
@@ -60,20 +60,32 @@ export function DataTable({ rows }: DataTableProps) {
         <thead className="bg-transparent">
           <tr className="flex items-center justify-between bg-custom-dark text-white font-os mb-2 rounded-md px-2 py-1">
             <th className="w-32 px-4 py-2 text-left font-os text-14">Client</th>
-            <th className="w-48 px-4 py-2 text-center font-os text-14">Global Lead</th>
-            <th className="w-32 px-4 py-2 text-center font-os text-14">Marketplace</th>
-            <th className="w-20 px-2 py-2 text-center font-os text-14">Contrats</th>
-            <th className="w-48 px-4 py-2 text-center font-os text-14">Type de contrats</th>
-            <th className="w-48 px-4 py-2 text-center font-os text-14">Contact Principal</th>
-            <th className="w-48 px-4 py-2 text-center font-os text-14">Heures Total</th>
+            <th className="w-48 px-4 py-2 text-center font-os text-14">
+              Global Lead
+            </th>
+            <th className="w-32 px-4 py-2 text-center font-os text-14">
+              Marketplace
+            </th>
+            <th className="w-20 px-2 py-2 text-center font-os text-14">
+              Contrats
+            </th>
+            <th className="w-48 px-4 py-2 text-center font-os text-14">
+              Type de contrats
+            </th>
+            <th className="w-48 px-4 py-2 text-center font-os text-14">
+              Contact Principal
+            </th>
+            <th className="w-48 px-4 py-2 text-center font-os text-14">
+              Heures Total
+            </th>
           </tr>
         </thead>
-        <tbody className="w-full rounded-md card-bg p-2 inline-block">
+        <tbody className="w-full rounded-md card-bg py-4 px-2 inline-block">
           {rows.map((row, idx) => {
             const isFirst = idx === 0;
             const isLast = idx === rows.length - 1;
             const [actualStr, theoreticalStr] = row.hours
-              .split('/')
+              .split("/")
               .map((s) => s.trim());
             const actual = parseHourString(actualStr);
             const theoretical = parseHourString(theoreticalStr);
@@ -81,22 +93,24 @@ export function DataTable({ rows }: DataTableProps) {
             const upper = theoretical * 1.1;
             const hoursClass =
               actual < lower || actual > upper
-                ? 'bg-custom-red text-white'
-                : 'bg-custom-green text-white';
+                ? "bg-custom-red text-white"
+                : "bg-custom-green text-white";
 
-            const cellPadding = `${isFirst ? 'pt-0 pb-3' : 'py-3'} ${isLast ? 'pb-0 pt-3' : 'py-3'}`;
-            const borderClass = `${isLast ? '' : 'border-b-1 border-[#F3F2FF]'}`;
+            const cellPadding = `${isFirst ? "pt-0 pb-3" : "py-3"} ${
+              isLast ? "pb-0 pt-3" : "py-3"
+            }`;
+            const borderClass = `${
+              isLast ? "" : "border-b-1 border-[#F3F2FF]"
+            }`;
 
             return (
               <React.Fragment key={idx}>
-                {/* Ligne principale */}
                 <tr
                   className={`flex items-center justify-between font-os cursor-pointer ${cellPadding} ${borderClass}`}
-                  onClick={() => toggleRow(idx)}
-                >
+                  onClick={() => toggleRow(idx)}>
                   <td className="w-32 px-4 font-anton text-14">{row.client}</td>
                   <td className="w-48 px-4 text-center flex items-center justify-center">
-                    {row.lead === 'Oui' ? (
+                    {row.lead === "Oui" ? (
                       <span className="font-os text-14 bg-custom-green text-white px-3 py-1 rounded uppercase leading-5 block w-fit">
                         {row.lead}
                       </span>
@@ -108,7 +122,7 @@ export function DataTable({ rows }: DataTableProps) {
                     {row.marketplaces.map((m) => (
                       <img
                         key={m}
-                        src={flagIcons[m] ?? ''}
+                        src={flagIcons[m] ?? ""}
                         alt={`Flag ${m}`}
                         className="w-6 inline-block"
                       />
@@ -122,9 +136,8 @@ export function DataTable({ rows }: DataTableProps) {
                       <span
                         key={t}
                         className={`px-3 py-1 rounded text-14 uppercase m-0 leading-5 block h-auto ${
-                          typeStyles[t] ?? 'bg-gray-100 text-gray-800'
-                        }`}
-                      >
+                          typeStyles[t] ?? "bg-gray-100 text-gray-800"
+                        }`}>
                         {t}
                       </span>
                     ))}
@@ -133,7 +146,8 @@ export function DataTable({ rows }: DataTableProps) {
                     {row.contact}
                   </td>
                   <td className="w-48 px-4 text-center flex items-center justify-center">
-                    <span className={`px-3 py-[5px] rounded text-14 leading-5 block w-fit h-auto ${hoursClass}`}>
+                    <span
+                      className={`px-3 py-[5px] rounded text-14 leading-5 block w-fit h-auto ${hoursClass}`}>
                       {row.hours}
                     </span>
                   </td>
@@ -143,32 +157,48 @@ export function DataTable({ rows }: DataTableProps) {
                   <tr className="flex w-full bg-white mb-2 rounded-md">
                     <td className="w-full px-4 py-3" colSpan={7}>
                       <div className="font-os text-sm">
-                        <div className='flex items-center justify-between mb-2'>
-                          <div className="w-48 font-bold text-left">Collaborateur</div>
-                          <div className="w-48 font-bold text-center">Poste</div>
-                          <div className="w-48 font-bold text-center">Grade</div>
-                          <div className="w-48 font-bold text-center">Statut</div>
-                          <div className="w-48 font-bold text-center">Business Unit</div>
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="w-48 font-bold text-left">
+                            Collaborateur
+                          </div>
+                          <div className="w-48 font-bold text-center">
+                            Poste
+                          </div>
+                          <div className="w-48 font-bold text-center">
+                            Grade
+                          </div>
+                          <div className="w-48 font-bold text-center">
+                            Statut
+                          </div>
+                          <div className="w-48 font-bold text-center">
+                            Business Unit
+                          </div>
                         </div>
 
                         <div>
                           {row.collaborateurs.map((c, i) => (
                             <React.Fragment key={i}>
-                              <div className='flex items-center justify-between mt-2'>
+                              <div className="flex items-center justify-between mt-2">
                                 <div className="w-48 text-left">{c.name}</div>
-                                <div className="w-48 text-center">{c.poste}</div>
-                                <div className="w-48 text-center">{c.grade}</div>
-                                <div className="w-48 text-center">{c.statut}</div>
-                                <div className='w-48 flex items-center justify-center'>
-                                  {c.bu === 'GGS' ? (
+                                <div className="w-48 text-center">
+                                  {c.poste}
+                                </div>
+                                <div className="w-48 text-center">
+                                  {c.grade}
+                                </div>
+                                <div className="w-48 text-center">
+                                  {c.statut}
+                                </div>
+                                <div className="w-48 flex items-center justify-center">
+                                  {c.bu === "GGS" ? (
                                     <span className="px-2 py-1 rounded text-xs bg-custom-green text-white">
                                       {c.bu}
                                     </span>
-                                  ) : c.bu === 'LCS' ? (
+                                  ) : c.bu === "LCS" ? (
                                     <span className="px-2 py-1 rounded text-xs bg-custom-red text-white">
                                       {c.bu}
                                     </span>
-                                  ) : c.bu === 'MEDIA' ? (
+                                  ) : c.bu === "MEDIA" ? (
                                     <span className="px-2 py-1 rounded text-xs bg-custom-yellow text-white">
                                       {c.bu}
                                     </span>
