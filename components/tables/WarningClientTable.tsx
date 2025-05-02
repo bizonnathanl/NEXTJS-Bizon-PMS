@@ -1,4 +1,3 @@
-// components/tables/WarningClientTable.tsx
 "use client";
 import React, { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
@@ -125,11 +124,12 @@ export function WarningClientTable({ rows }: WarningClientRowData) {
     });
 
   return (
-    <div>
+    <div className="overflow-x-auto">
+      {/* Filtres intégrés */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-4">
           {filters.map(({ label, defaultOption, key }) => (
-            <div key={key}>
+            <div key={key} className="w-44">
               <Select
                 value={selections[key]}
                 onValueChange={(val) =>
@@ -319,6 +319,72 @@ export function WarningClientTable({ rows }: WarningClientRowData) {
                     </span>
                   </td>
                 </tr>
+                {expanded.has(idx) && (
+                  <tr className="flex w-full bg-white mb-2 rounded-md">
+                    <td className="w-full px-4 py-3" colSpan={8}>
+                      <div className="font-os text-sm">
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="w-48 font-bold text-left">
+                            Collaborateur
+                          </div>
+                          <div className="w-48 font-bold text-center">
+                            Poste
+                          </div>
+                          <div className="w-48 font-bold text-center">
+                            Grade
+                          </div>
+                          <div className="w-40 font-bold text-center">
+                            Consulting
+                          </div>
+                          <div className="w-40 font-bold text-center">
+                            Opérations
+                          </div>
+                          <div className="w-40 font-bold text-center">
+                            Marge
+                          </div>
+                        </div>
+                        {row.collaborators.map((c, i) => {
+                          const hours = c.consulting + c.op;
+                          const rev = hours * c.rank.client_hour_invoice;
+                          const cost = hours * (c.rank.employee_cost ?? 0);
+                          const collMargin =
+                            rev > 0 ? ((rev - cost) / rev) * 100 : 0;
+                          const collMarginBg =
+                            collMargin < 75
+                              ? "bg-custom-red"
+                              : "bg-custom-green";
+                          return (
+                            <div
+                              key={i}
+                              className="flex items-center justify-between mt-2">
+                              <div className="w-48 text-left">
+                                {c.first_name} {c.last_name}
+                              </div>
+                              <div className="w-48 text-center">
+                                {c.job_title}
+                              </div>
+                              <div className="w-48 text-center">
+                                {c.rank.title}
+                              </div>
+                              <div className="w-40 text-center">
+                                {formatHours(c.consulting)}
+                              </div>
+                              <div className="w-40 text-center">
+                                {formatHours(c.op)}
+                              </div>
+                              <div className="w-40 text-center">
+                                <span
+                                  className={`${collMarginBg} px-2 py-1 rounded text-14 text-white`}>
+                                  {collMargin.toFixed(0)} %
+                                </span>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </td>
+                  </tr>
+                )}
               </React.Fragment>
             );
           })}
