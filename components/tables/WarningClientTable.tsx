@@ -129,7 +129,7 @@ export function WarningClientTable({ rows }: WarningClientRowData) {
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-4">
           {filters.map(({ label, defaultOption, key }) => (
-            <div key={key} className="w-44">
+            <div key={key}>
               <Select
                 value={selections[key]}
                 onValueChange={(val) =>
