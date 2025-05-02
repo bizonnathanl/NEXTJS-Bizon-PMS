@@ -1,6 +1,16 @@
-// components/tables/DataTable.tsx
+// components/tables/DashboardClientTable.tsx
 "use client";
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectGroup,
+  SelectLabel,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 import { Collaborator } from "@/interfaces/Collaborator";
 
 export interface ClientRowData {
@@ -20,6 +30,63 @@ interface DataTableProps {
 
 export function ClientDataTable({ rows }: DataTableProps) {
   const [expanded, setExpanded] = useState<Set<number>>(new Set());
+  const [selections, setSelections] = useState<
+    Record<"lead" | "types" | "marketplaces", string>
+  >({
+    lead: "all",
+    types: "all",
+    marketplaces: "all",
+  });
+
+  const filters = [
+    {
+      label: "Global Lead",
+      defaultOption: "Tous les Global Lead",
+      key: "lead" as const,
+    },
+    {
+      label: "Type de contrat",
+      defaultOption: "Tous les Types de contrat",
+      key: "types" as const,
+    },
+    {
+      label: "Marketplaces",
+      defaultOption: "Toutes les marketplaces",
+      key: "marketplaces" as const,
+    },
+  ];
+
+  // Préparer les options pour chaque filtre
+  const optionsMap = useMemo(() => {
+    const map: Record<"lead" | "types" | "marketplaces", Set<string>> = {
+      lead: new Set(),
+      types: new Set(),
+      marketplaces: new Set(),
+    };
+    rows.forEach((row) => {
+      map.lead.add(row.lead);
+      row.types.forEach((t) => map.types.add(t));
+      row.marketplaces.forEach((m) => map.marketplaces.add(m));
+    });
+    return {
+      lead: Array.from(map.lead).sort(),
+      types: Array.from(map.types).sort(),
+      marketplaces: Array.from(map.marketplaces).sort(),
+    };
+  }, [rows]);
+
+  // Appliquer les filtres
+  const filteredRows = useMemo(() => {
+    return rows.filter((row) => {
+      const byLead = selections.lead === "all" || row.lead === selections.lead;
+      const byType =
+        selections.types === "all" || row.types.includes(selections.types);
+      const byMk =
+        selections.marketplaces === "all" ||
+        row.marketplaces.includes(selections.marketplaces);
+      return byLead && byType && byMk;
+    });
+  }, [rows, selections]);
 
   const toggleRow = (idx: number) => {
     const s = new Set(expanded);
@@ -49,7 +116,47 @@ export function ClientDataTable({ rows }: DataTableProps) {
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200 text-[#09002F] px-2">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-4">
+          {filters.map(({ label, defaultOption, key }) => (
+            <div key={key}>
+              <Select
+                value={selections[key]}
+                onValueChange={(val) =>
+                  setSelections((prev) => ({ ...prev, [key]: val }))
+                }>
+                <SelectTrigger className="w-full card-bg font-bold rounded-md py-2 px-3 text-sm placeholder-gray-500 shadow-none border-none focus-visible:ring-0">
+                  <SelectValue placeholder={label} />
+                </SelectTrigger>
+                <SelectContent
+                  sideOffset={5}
+                  align="start"
+                  className="z-50 bg-white rounded-md shadow-lg">
+                  <SelectGroup>
+                    <SelectLabel>{label}</SelectLabel>
+                    <SelectItem value="all">{defaultOption}</SelectItem>
+                    {optionsMap[key].map((opt) => (
+                      <SelectItem key={opt} value={opt}>
+                        {opt}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+          ))}
+        </div>
+        <Button
+          size="sm"
+          onClick={() =>
+            setSelections({ lead: "all", types: "all", marketplaces: "all" })
+          }
+          className="cta-purple text-white font-bold rounded-md px-6 py-2 h-auto">
+          Réinitialiser
+        </Button>
+      </div>
+
+      <table className="divide-y divide-gray-200 text-[#09002F] px-2">
         <thead className="bg-transparent">
           <tr className="flex items-center justify-between bg-custom-dark text-white font-os mb-2 rounded-md px-2 py-1">
             <th className="w-32 px-4 py-2 text-left font-os text-14">Client</th>
@@ -74,9 +181,9 @@ export function ClientDataTable({ rows }: DataTableProps) {
           </tr>
         </thead>
         <tbody className="w-full rounded-md card-bg py-4 px-2 inline-block">
-          {rows.map((row, idx) => {
+          {filteredRows.map((row, idx) => {
             const isFirst = idx === 0;
-            const isLast = idx === rows.length - 1;
+            const isLast = idx === filteredRows.length - 1;
             const [actualStr, theoreticalStr] = row.hours
               .split("/")
               .map((s) => s.trim());
@@ -92,9 +199,7 @@ export function ClientDataTable({ rows }: DataTableProps) {
             const cellPadding = `${isFirst ? "pt-0 pb-3" : "py-3"} ${
               isLast ? "pb-0 pt-3" : "py-3"
             }`;
-            const borderClass = `${
-              isLast ? "" : "border-b-1 border-[#F3F2FF]"
-            }`;
+            const borderClass = isLast ? "" : "border-b-1 border-[#F3F2FF]";
 
             return (
               <React.Fragment key={idx}>
@@ -167,7 +272,6 @@ export function ClientDataTable({ rows }: DataTableProps) {
                             Business Unit
                           </div>
                         </div>
-
                         <div>
                           {row.collaborators.map((c, i) => (
                             <React.Fragment key={i}>

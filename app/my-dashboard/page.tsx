@@ -1,8 +1,8 @@
+// app/dashboard/page.tsx (ou wherever your DashboardPage lives)
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { MetricCard } from "@/components/item/MetricCard";
-import { FilterPanel } from "@/components/item/ClientFilters";
 import {
   HoursBarChart,
   HoursDataItem,
@@ -25,30 +25,19 @@ interface UserData {
   last_name: string;
   clients: number;
   contracts: number;
-  forfaitMinimum: number;
-  remplissage: number;
-  tempsRestant: number;
+  minimumPackage: number;
+  filling: number;
+  remaining: number;
   n1: string;
 }
 
-const defaultManager: Collaborator = {
-  first_name: "Nicolas",
-  last_name: "HABERT",
-  languages: ["FR"],
-  job_title: "Director",
-  rank: Ranks.DIRECTOR,
-  statut: "Active",
-  business_unit: "GGS",
-  manager: {} as Collaborator,
-};
-
 export default function DashboardPage() {
-  const userData = {
+  const userData: UserData = {
     first_name: "Thibaut",
     last_name: "TRIKI",
     clients: 12,
     contracts: 26,
-    minimumPackage: 1312460,
+    minimumPackage: 1_312_460,
     filling: 0.72,
     remaining: 26,
     n1: "Nicolas HABERT",
@@ -61,7 +50,7 @@ export default function DashboardPage() {
     { month: "Avril.", theoretical: 70, actual: 50 },
     { month: "Mai.", theoretical: 140, actual: 60 },
     { month: "Juin.", theoretical: 70, actual: 50 },
-    { month: "Juil..", theoretical: 140, actual: 60 },
+    { month: "Juil.", theoretical: 140, actual: 60 },
     { month: "Août.", theoretical: 70, actual: 50 },
     { month: "Sept.", theoretical: 140, actual: 60 },
     { month: "Oct.", theoretical: 70, actual: 50 },
@@ -129,38 +118,6 @@ export default function DashboardPage() {
     },
   ];
 
-  const [filteredRows, setFilteredRows] = useState<ClientRowData[]>(rowData);
-  const [selections, setSelections] = useState<
-    Record<string, string | undefined>
-  >({});
-
-  const handleFilterChange = (
-    filterKey: string,
-    option: string | undefined
-  ) => {
-    if (filterKey === "apply") {
-      const newRows = rowData.filter((row) => {
-        return Object.entries(selections).every(([key, value]) => {
-          if (!value || key === "collaborateurs") return true;
-          const cell = row[key as keyof ClientRowData];
-          if (Array.isArray(cell)) {
-            if (cell.length === 0 || typeof cell[0] === "string") {
-              return (cell as string[]).includes(value);
-            }
-            return true;
-          }
-          return String(cell) === value;
-        });
-      });
-      setFilteredRows(newRows);
-    } else {
-      setSelections((prev) => ({
-        ...prev,
-        [filterKey]: option,
-      }));
-    }
-  };
-
   return (
     <div className="flex min-h-screen">
       <main className="flex-1 pl-4 space-y-8 overflow-auto">
@@ -209,8 +166,7 @@ export default function DashboardPage() {
         </div>
 
         <div>
-          <FilterPanel rows={rowData} onFilterChange={handleFilterChange} />
-          <ClientDataTable rows={filteredRows} />
+          <ClientDataTable rows={rowData} />
         </div>
       </main>
     </div>

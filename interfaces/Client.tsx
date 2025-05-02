@@ -1,7 +1,10 @@
 import { Collaborator } from "@/interfaces/Collaborator";
 import { ClientDetails } from "@/interfaces/ClientDetails";
-import { Expenses } from "@/interfaces/Expenses";
+import { Expenses } from "@/interfaces/Expense";
 import { Document } from "@/interfaces/Document";
+import { ROWorkPlans } from "@/interfaces/ROWorkPlan";
+import { RMWorkPlans } from "@/interfaces/RMWorkPlan";
+import { ConsultingWorkPlans } from "./ConsultingWorkPlan";
 
 export interface Client {
   name: string;

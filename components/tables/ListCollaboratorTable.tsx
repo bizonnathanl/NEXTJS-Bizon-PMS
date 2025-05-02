@@ -1,19 +1,76 @@
-// components/tables/DataTable.tsx
 "use client";
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Collaborator } from "@/interfaces/Collaborator";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectGroup,
+  SelectLabel,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
 interface DataTableProps {
   rows: Collaborator[];
 }
 
 export function CollaboratorDataTable({ rows }: DataTableProps) {
+  const [selections, setSelections] = useState<
+    Record<"statut" | "businessUnit", string>
+  >({
+    statut: "all",
+    businessUnit: "all",
+  });
+
+  const filters = [
+    {
+      label: "Statut",
+      defaultOption: "Tous les Statut",
+      key: "statut" as const,
+    },
+    {
+      label: "Business Unit",
+      defaultOption: "Toutes les BU",
+      key: "businessUnit" as const,
+    },
+  ];
+
+  // Préparer les options pour chaque filtre
+  const optionsMap = useMemo(() => {
+    const map: Record<"statut" | "business_unit", Set<string>> = {
+      statut: new Set(),
+      business_unit: new Set(),
+    };
+    rows.forEach((row) => {
+      map.statut.add(row.statut);
+      map.business_unit.add(row.business_unit);
+    });
+    return {
+      statut: Array.from(map.statut).sort(),
+      businessUnit: Array.from(map.business_unit).sort(),
+    };
+  }, [rows]);
+
+  // Appliquer les filtres
+  const filteredRows = useMemo(() => {
+    return rows.filter((row) => {
+      const byStatut =
+        selections.statut === "all" || row.statut === selections.statut;
+      const byBu =
+        selections.businessUnit === "all" ||
+        row.business_unit === selections.businessUnit;
+      return byStatut && byBu;
+    });
+  }, [rows, selections]);
+
+  // Styles utilitaires
   const buStyles: Record<string, string> = {
     LCS: "bg-custom-red text-white",
     GGS: "bg-custom-green text-white",
     MEDIA: "bg-custom-yellow text-white",
   };
-
   const flagIcons: Record<string, string> = {
     FR: "/icons/SVG_Flag-FR.svg",
     UK: "/icons/SVG_Flag-UK.svg",
@@ -24,53 +81,92 @@ export function CollaboratorDataTable({ rows }: DataTableProps) {
   };
 
   return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200 text-[#09002F] px-2">
+    <div>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-4">
+          {filters.map(({ label, defaultOption, key }) => (
+            <div key={key}>
+              <Select
+                value={selections[key]}
+                onValueChange={(val) =>
+                  setSelections((prev) => ({ ...prev, [key]: val }))
+                }>
+                <SelectTrigger className="w-full card-bg font-bold rounded-md py-2 px-3 text-sm placeholder-gray-500 shadow-none border-none focus-visible:ring-0">
+                  <SelectValue placeholder={label} />
+                </SelectTrigger>
+                <SelectContent
+                  sideOffset={5}
+                  align="start"
+                  className="z-50 bg-white rounded-md shadow-lg">
+                  <SelectGroup>
+                    <SelectLabel>{label}</SelectLabel>
+                    <SelectItem value="all">{defaultOption}</SelectItem>
+                    {optionsMap[key].map((opt) => (
+                      <SelectItem key={opt} value={opt}>
+                        {opt}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+          ))}
+        </div>
+        <Button
+          size="sm"
+          onClick={() => setSelections({ statut: "all", businessUnit: "all" })}
+          className="cta-purple text-white font-bold rounded-md px-6 py-2 h-auto">
+          Réinitialiser
+        </Button>
+      </div>
+
+      <table className=" divide-y text-[#09002F] px-2">
         <thead className="bg-transparent">
           <tr className="flex items-center justify-between bg-custom-dark text-white font-os mb-2 rounded-md px-2 py-1">
-            <th className="w-52 px-4 py-2 text-left font-os text-14">
-              Collaboreteur
+            <th className="w-48 px-4 py-2 text-left font-os text-14">
+              Collaborateur
             </th>
-            <th className="w-40 px-4 py-2 text-center font-os text-14">
+            <th className="w-44 px-4 py-2 text-center font-os text-14">
               Langues parlées
             </th>
-            <th className="w-48 px-4 py-2 text-center font-os text-14">
+            <th className="w-44 px-4 py-2 text-center font-os text-14">
               Poste
             </th>
-            <th className="w-40 px-4 py-2 text-center font-os text-14">
+            <th className="w-36 px-4 py-2 text-center font-os text-14">
               Grade
             </th>
-            <th className="w-40 px-4 py-2 text-center font-os text-14">
+            <th className="w-36 px-4 py-2 text-center font-os text-14">
               Statut
             </th>
-            <th className="w-40 px-4 py-2 text-center font-os text-14">
+            <th className="w-36 px-4 py-2 text-center font-os text-14">
               Business Unit
             </th>
             <th className="w-20 px-2 py-2 text-center font-os text-14">
-              Contrats
+              Clients
             </th>
             <th className="w-20 px-4 py-2 text-center font-os text-14">
-              Clients
+              Contrats
             </th>
           </tr>
         </thead>
         <tbody className="w-full rounded-md card-bg py-4 px-2 inline-block">
-          {rows.map((row, idx) => {
+          {filteredRows.map((row, idx) => {
             const isFirst = idx === 0;
-            const isLast = idx === rows.length - 1;
-
+            const isLast = idx === filteredRows.length - 1;
             const cellPadding = `${isFirst ? "pt-0 pb-3" : "py-3"} ${
               isLast ? "pb-0 pt-3" : "py-3"
             }`;
-            const borderClass = `${
-              isLast ? "" : "border-b-1 border-[#F3F2FF]"
-            }`;
+            const borderClass = isLast ? "" : "border-b-1 border-[#F3F2FF]";
+
+            const countClients = row.client?.length ?? 0;
+            const clientsBg =
+              countClients > 0 ? "bg-custom-green" : "text-[#09002F]";
 
             return (
               <React.Fragment key={idx}>
                 <tr
                   className={`flex items-center justify-between font-os cursor-pointer ${cellPadding} ${borderClass}`}>
-                  <td className="w-52 px-4 font-anton text-14">
+                  <td className="w-48 px-4 font-anton text-14">
                     <div className="flex items-center">
                       <img
                         src={row.picture}
@@ -80,80 +176,48 @@ export function CollaboratorDataTable({ rows }: DataTableProps) {
                       {row.first_name} {row.last_name}
                     </div>
                   </td>
-                  <td className="w-40 px-4 font-os text-14 text-center flex items-center justify-center gap-1">
+                  <td className="w-44 px-4 font-os text-14 text-center flex items-center justify-center gap-1">
                     {row.languages.map((m) => (
                       <img
                         key={m}
-                        src={flagIcons[m] ?? ""}
-                        alt={`Flag ${m}`}
+                        src={flagIcons[m]}
+                        alt={m}
                         className="w-6 inline-block"
                       />
                     ))}
                   </td>
-                  <td className="w-48 px-2 font-os text-14 text-center">
+                  <td className="w-44 px-2 font-os text-14 text-center">
                     {row.job_title}
                   </td>
-                  <td className="w-40 px-2 font-os text-14 text-center">
+                  <td className="w-36 px-2 font-os text-14 text-center">
                     {row.rank.title}
                   </td>
-                  <td className="w-40 px-2 font-os text-14 text-center">
+                  <td className="w-36 px-2 font-os text-14 text-center">
                     {row.statut}
                   </td>
-                  <td className="w-40 px-4 flex space-x-1 justify-center gap-1">
+                  <td className="w-36 px-4 flex space-x-1 justify-center gap-1">
                     <span
-                      key={row.business_unit}
-                      className={`px-3 py-1 rounded text-14 uppercase m-0 leading-5 block h-auto ${
-                        buStyles[row.business_unit] ??
-                        "bg-gray-100 text-gray-800"
+                      className={`px-3 py-1 rounded uppercase text-14 leading-5 ${
+                        buStyles[row.business_unit]
                       }`}>
                       {row.business_unit}
                     </span>
                   </td>
-                  <td className="w-20 px-4 font-os text-14 text-center">
-                    {(() => {
-                      const count = row.client?.length ?? 0;
-                      const isPositive = count > 0;
-                      return (
-                        <span
-                          className={`
-                          block w-fit uppercase leading-5
-                          px-3 py-1 rounded
-                          font-os text-14
-                          ${
-                            isPositive
-                              ? "bg-custom-green text-white"
-                              : "text-[#09002F]" /* ou votre couleur par défaut */
-                          }
-                        `}>
-                          {count}
-                        </span>
-                      );
-                    })()}
+                  <td className="w-20 px-4 font-os text-14 text-center flex items-center justify-center">
+                    <span
+                      className={`${clientsBg} px-3 py-1 rounded block w-fit uppercase leading-5`}>
+                      {countClients}
+                    </span>
                   </td>
-                  <td className="w-20 px-4 font-os text-14 text-center">
-                    {(() => {
-                      const clients = row.client ?? [];
-                      const count = clients.reduce(
-                        (sum, client) => sum + (client.documents?.length ?? 0),
+                  <td className="w-20 px-4 font-os text-14 text-center flex items-center justify-center">
+                    <span
+                      className={`${clientsBg} px-3 py-1 rounded block w-fit uppercase leading-5`}>
+                      {row.client?.reduce(
+                        (sum, c) => sum + (c.documents?.length ?? 0),
                         0
-                      );
-                      const isPositive = count > 0;
-                      return (
-                        <span
-                          className={`
-                          block w-fit uppercase leading-5
-                          px-3 py-1 rounded
-                          font-os text-14
-                          ${
-                            isPositive
-                              ? "bg-custom-green text-white"
-                              : "text-[#09002F]"
-                          }
-                        `}>
-                          {count}
-                        </span>
-                      );
-                    })()}
+                      )}{" "}
+                      0
+                    </span>
                   </td>
                 </tr>
               </React.Fragment>

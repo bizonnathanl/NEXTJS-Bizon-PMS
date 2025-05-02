@@ -1,22 +1,22 @@
+// app/my-dashboard/page.tsx
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { MetricCard } from "@/components/item/MetricCard";
-import { FilterPanel } from "@/components/item/ClientFilters";
 import {
   CustomPieChart,
   CustomPieDataItem,
 } from "@/components/charts/CustomPieChart";
 import {
-  ClientDataTable,
+  WarningClientTable,
   ClientRowData,
-} from "@/components/tables/DashboardClientTable";
-import { CollaboratorDataTable } from "@/components/tables/ListCollaboratorTable";
-import { Collaborator } from "@/interfaces/Collaborator";
-import * as Collaborators from "@/data/Collaborators";
-
+} from "@/components/tables/WarningClientTable";
 import { SmoothLineChart } from "@/components/charts/SmoothLineChart";
 import { SteppedLineChart } from "@/components/charts/SteppedLineChart";
+
+import { Collaborator } from "@/interfaces/Collaborator";
+import * as Collaborators from "@/data/Collaborators";
+import * as Ranks from "@/data/Ranks";
 
 interface UnitDataItem {
   collaborators: number;
@@ -37,7 +37,7 @@ interface UnitDataItem {
 }
 
 export default function DashboardPage() {
-  let unitData: UnitDataItem = {
+  const unitData: UnitDataItem = {
     collaborators: 40,
     languages: 6,
     package: 13460,
@@ -55,15 +55,7 @@ export default function DashboardPage() {
     remainingTime: 20,
   };
 
-  let marginTagColor: string =
-    unitData.realMargin > 0.7 ? "bg-custom-green" : "bg-custom-red";
-  let hoursTagColor: string =
-    unitData.realHours > unitData.theoricalHours * 0.9
-      ? unitData.realHours < unitData.theoricalHours * 1.1
-        ? "bg-custom-green"
-        : "bg-custom-red"
-      : "bg-custom-red";
-
+  // Données graphiques
   const smoothData = [
     { month: "Janv.", target: 150, real: 160 },
     { month: "Fév.", target: 100, real: 90 },
@@ -72,7 +64,6 @@ export default function DashboardPage() {
     { month: "Mai.", target: 80, real: 75 },
     { month: "Juin", target: 120, real: 140 },
   ];
-
   const steppedData = [
     { month: "Janv.", a: 80, b: 120 },
     { month: "Fév.", a: 100, b: 100 },
@@ -81,23 +72,19 @@ export default function DashboardPage() {
     { month: "Mai.", a: 75, b: 80 },
     { month: "Juin", a: 140, b: 120 },
   ];
-
   const linesSmooth = [
     { dataKey: "target", name: "Objectif", color: "#7C67FF" },
     { dataKey: "real", name: "Réel", color: "#5EFBFB" },
   ];
-
   const linesStep = [
     { dataKey: "a", name: "Théorique", color: "#7C67FF" },
     { dataKey: "b", name: "Réel", color: "#5EFBFB" },
   ];
-
   const contractsTypeData: CustomPieDataItem[] = [
     { name: "Alternant", value: 30 },
     { name: "CDI", value: 30 },
     { name: "CDD", value: 5 },
   ];
-
   const rankData: CustomPieDataItem[] = [
     { name: "Senior 1", value: 8 },
     { name: "Senior 2", value: 6 },
@@ -108,13 +95,152 @@ export default function DashboardPage() {
     { name: "Assistant", value: 14 },
   ];
 
-  const rowData: Collaborator[] = [
-    Collaborators.NATHAN,
-    Collaborators.ELISE,
-    Collaborators.ARNAUD,
-    Collaborators.THIBAUT,
-    Collaborators.AYMERIC,
+  // Données clients
+  const ClientsRows: ClientRowData[] = [
+    {
+      name: "F1 Distribution",
+      global_lead_1: Collaborators.THIBAUT,
+      consulting: 10.5,
+      op: 16,
+      cost: 300,
+      billing: 4000,
+      documents: [
+        {
+          name: "Audit - Vendor",
+          start_date: "01/01/2025",
+          end_date: "01/06/2025",
+          type: ["Consulting"],
+          marketplaces: ["FR", "UK", "IT"],
+          package: "Silver",
+          minimum_package: 4000,
+          performance: false,
+          status: "Actif",
+          business_developper: Collaborators.MATTHIEU,
+          manager: Collaborators.THIBAUT,
+          business_unit: "LCS",
+        },
+      ],
+      collaborators: [
+        {
+          first_name: "Thibaut",
+          last_name: "TRIKI",
+          job_title: "Head of Strategy",
+          op: 2,
+          consulting: 1.5,
+          rank: Ranks.DIRECTOR,
+        },
+        {
+          first_name: "Aymeric",
+          last_name: "VURPILLOT",
+          job_title: "Consultant Senior",
+          op: 8,
+          consulting: 3,
+          rank: Ranks.SENIOR_1,
+        },
+        {
+          first_name: "Élise",
+          last_name: "BLANC",
+          job_title: "Consultant Junior",
+          op: 12,
+          consulting: 5,
+          rank: Ranks.JUNIOR_1,
+        },
+      ],
+    },
+    {
+      name: "Vermes BV",
+      global_lead_1: Collaborators.AYMERIC,
+      consulting: 8,
+      op: 12.5,
+      cost: 800,
+      billing: 2800,
+      documents: [
+        {
+          name: "Setup - Vendor",
+          start_date: "01/02/2025",
+          end_date: "01/03/2025",
+          type: ["Consulting"],
+          marketplaces: ["FR", "UK", "IT", "DE", "ES"],
+          package: "Platinium",
+          minimum_package: 10000,
+          performance: true,
+          status: "Actif",
+          business_developper: Collaborators.MATTHIEU,
+          manager: Collaborators.AYMERIC,
+          business_unit: "LCS",
+        },
+      ],
+      collaborators: [
+        {
+          first_name: "Aymeric",
+          last_name: "VURPILLOT",
+          job_title: "Consultant Senior",
+          op: 4,
+          consulting: 4,
+          rank: Ranks.SENIOR_1,
+        },
+        {
+          first_name: "Élise",
+          last_name: "BLANC",
+          job_title: "Consultant Junior",
+          op: 11.75,
+          consulting: 6.25,
+          rank: Ranks.JUNIOR_1,
+        },
+      ],
+    },
+    {
+      name: "Alfapac",
+      global_lead_1: Collaborators.ARNAUD,
+      consulting: 0,
+      op: 20,
+      cost: 400,
+      billing: 2400,
+      documents: [
+        {
+          name: "Retail Operations - Vendor",
+          start_date: "01/01/2023",
+          end_date: "01/01/2026",
+          type: ["RO"],
+          marketplaces: ["FR", "UK", "IT"],
+          package: "Diamond",
+          minimum_package: 8000,
+          performance: true,
+          status: "Actif",
+          business_developper: Collaborators.MATTHIEU,
+          manager: Collaborators.ARNAUD,
+          business_unit: "GGS",
+        },
+      ],
+      collaborators: [
+        {
+          first_name: "Arnaud",
+          last_name: "JARROT",
+          job_title: "Account Manager",
+          op: 5,
+          consulting: 0,
+          rank: Ranks.SENIOR_1,
+        },
+        {
+          first_name: "Nathan",
+          last_name: "LEFETEY",
+          job_title: "Account Manager Junior",
+          op: 8,
+          consulting: 0,
+          rank: Ranks.JUNIOR_1,
+        },
+        {
+          first_name: "Flora",
+          last_name: "RIBEIRO",
+          job_title: "Account Manager Junior",
+          op: 12,
+          consulting: 0,
+          rank: Ranks.JUNIOR_1,
+        },
+      ],
+    },
   ];
+
   return (
     <div className="flex min-h-screen">
       <main className="flex-1 pl-4 space-y-8 overflow-auto">
@@ -140,86 +266,10 @@ export default function DashboardPage() {
           <MetricCard
             label="Remplissage"
             value={unitData.realFilling * 100}
-            unit="€"
+            unit="%"
           />
           <MetricCard label="Directeur" value={unitData.director} />
         </div>
-
-        <table className="w-full mb-4">
-          <tbody className="w-full">
-            <tr className="flex items-center justify-between bg-white text-dark font-os rounded-md p-3 w-full">
-              <td className="w-fit flex items-center justify-center">
-                <div className="flex flex-col justify-center items-center gap-2">
-                  <span className="text-14 font-os font-bold mb-0">
-                    Charge horaire
-                  </span>
-                  <span
-                    className={`text-16 text-white px-2 py-1 rounded ${hoursTagColor}`}>
-                    {unitData.realHours}h / {unitData.theoricalHours}h
-                  </span>
-                </div>
-              </td>
-
-              <td className="w-fit flex items-center justify-center">
-                <div className="flex flex-col justify-center items-center gap-2">
-                  <span className="text-14 font-os font-bold mb-0">Marge</span>
-                  <span
-                    className={`text-16 text-white px-2 py-1 rounded ${marginTagColor}`}>
-                    {unitData.realMargin * 100} % /{" "}
-                    {unitData.theoricalMargin * 100} %
-                  </span>
-                </div>
-              </td>
-
-              <td className="w-fit flex items-center justify-center">
-                <div className="flex flex-col justify-center items-center gap-2">
-                  <span className="text-14 font-os font-bold mb-0">
-                    Facturation totale
-                  </span>
-                  <span className="text-16 text-dark font-light">
-                    {unitData.invoicing.toLocaleString("fr-FR", {
-                      maximumFractionDigits: 2,
-                    })}{" "}
-                    €
-                  </span>
-                </div>
-              </td>
-
-              <td className="w-fit flex items-center justify-center">
-                <div className="flex flex-col justify-center items-center gap-2">
-                  <span className="text-14 font-os font-bold mb-0">
-                    Clients
-                  </span>
-                  <span className="text-16 text-dark font-light">
-                    {unitData.clients}
-                  </span>
-                </div>
-              </td>
-
-              <td className="w-fit flex items-center justify-center">
-                <div className="flex flex-col justify-center items-center gap-2">
-                  <span className="text-14 font-os font-bold mb-0">
-                    Contrats
-                  </span>
-                  <span className="text-16 text-dark font-light">
-                    {unitData.contracts}
-                  </span>
-                </div>
-              </td>
-
-              <td className="w-fit flex items-center justify-center">
-                <div className="flex flex-col justify-center items-center gap-2">
-                  <span className="text-14 font-os font-bold mb-0">
-                    Temps restant
-                  </span>
-                  <span className="text-16 text-dark font-light">
-                    {unitData.remainingTime}h
-                  </span>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
 
         <div className="flex flex-col gap-8 mb-16">
           <div className="flex items-center justify-between gap-8">
@@ -248,13 +298,10 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* <div>
-          <FilterPanel
-            rows={rowData}
-            onFilterChange={handleFilterChange}
-          />
-          <DataTable rows={filteredRows} />
-        </div> */}
+        <div>
+          <h2 className="text-2xl font-anton mb-4">Clients défaillants</h2>
+          <WarningClientTable rows={ClientsRows} />
+        </div>
       </main>
     </div>
   );

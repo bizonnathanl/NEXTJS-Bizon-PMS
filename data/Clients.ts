@@ -1,19 +1,17 @@
 import { Client } from "@/interfaces/Client";
 import * as Collaborators from "@/data/Collaborators";
+import * as RM from "@/data/RMWorkPlans";
+import * as RO from "@/data/ROWorkPlans";
+import * as Doc from "@/data/Documents";
 
 export const CAFES_FOLLIET: Client = {
   name: "Cafés Folliet",
   marketplaces: ["FR", "UK", "ES"],
   minimum_package: 2000,
   business_developper: Collaborators.MATTHIEU,
-  global_lead_1: Collaborators.THIBAUT,
-  global_lead_2: Collaborators.AYMERIC,
-  collaborators: [
-    Collaborators.NATHAN,
-    Collaborators.ARNAUD,
-    Collaborators.ELISE,
-    Collaborators.AYMERIC,
-  ],
+  global_lead_1: Collaborators.ARNAUD,
+  collaborators: [Collaborators.NATHAN, Collaborators.ARNAUD],
+  documents: [Doc.CONTRACT_1],
 };
 
 export const VERMES_BV: Client = {
@@ -24,11 +22,12 @@ export const VERMES_BV: Client = {
   global_lead_1: Collaborators.THIBAUT,
   global_lead_2: Collaborators.AYMERIC,
   collaborators: [
+    Collaborators.THIBAUT,
     Collaborators.NATHAN,
-    Collaborators.ARNAUD,
     Collaborators.ELISE,
     Collaborators.AYMERIC,
   ],
+  documents: [Doc.CONTRACT_2],
 };
 
 export const ALFAPAC: Client = {
@@ -36,14 +35,14 @@ export const ALFAPAC: Client = {
   marketplaces: ["FR"],
   minimum_package: 2000,
   business_developper: Collaborators.MATTHIEU,
-  global_lead_1: Collaborators.THIBAUT,
-  global_lead_2: Collaborators.AYMERIC,
+  global_lead_1: Collaborators.ARNAUD,
+  global_lead_2: Collaborators.NATHAN,
   collaborators: [
     Collaborators.NATHAN,
     Collaborators.ARNAUD,
     Collaborators.ELISE,
-    Collaborators.AYMERIC,
   ],
+  documents: [Doc.DEVIS_2],
 };
 
 export const SFA_SANIFLO: Client = {
@@ -59,6 +58,7 @@ export const SFA_SANIFLO: Client = {
     Collaborators.ELISE,
     Collaborators.AYMERIC,
   ],
+  documents: [Doc.DEVIS_1],
 };
 
 export const F1_DISTRIBUTION: Client = {
@@ -69,9 +69,9 @@ export const F1_DISTRIBUTION: Client = {
   global_lead_1: Collaborators.THIBAUT,
   global_lead_2: Collaborators.AYMERIC,
   collaborators: [
-    Collaborators.NATHAN,
-    Collaborators.ARNAUD,
+    Collaborators.THIBAUT,
     Collaborators.ELISE,
     Collaborators.AYMERIC,
   ],
+  documents: [Doc.CONTRACT_1, Doc.DEVIS_1],
 };
