@@ -242,7 +242,7 @@ export default function DashboardPage() {
   ];
 
   return (
-    <div className="flex min-h-screen">
+    <div className="w-[80vw] flex min-h-screen">
       <main className="flex-1 pl-4 space-y-8 overflow-auto">
         <PageHeader
           breadcrumbs={[{ label: "Tableau de bord - Direction" }]}
