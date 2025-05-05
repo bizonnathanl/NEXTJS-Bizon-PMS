@@ -6,6 +6,7 @@ export interface Document {
   name: string;
   start_date: string;
   end_date?: string;
+  document_type: string;
   type: string[];
   marketplaces: string[];
   package: string;

@@ -11,7 +11,7 @@ export const CAFES_FOLLIET: Client = {
   business_developper: Collaborators.MATTHIEU,
   global_lead_1: Collaborators.ARNAUD,
   collaborators: [Collaborators.NATHAN, Collaborators.ARNAUD],
-  documents: [Doc.CONTRACT_1],
+  // documents: [Doc.CONTRACT_1],
 };
 
 export const VERMES_BV: Client = {
@@ -27,7 +27,7 @@ export const VERMES_BV: Client = {
     Collaborators.ELISE,
     Collaborators.AYMERIC,
   ],
-  documents: [Doc.CONTRACT_2],
+  // documents: [Doc.CONTRACT_2],
 };
 
 export const ALFAPAC: Client = {
@@ -42,7 +42,7 @@ export const ALFAPAC: Client = {
     Collaborators.ARNAUD,
     Collaborators.ELISE,
   ],
-  documents: [Doc.DEVIS_2],
+  // documents: [Doc.DEVIS_2],
 };
 
 export const SFA_SANIFLO: Client = {
@@ -58,7 +58,7 @@ export const SFA_SANIFLO: Client = {
     Collaborators.ELISE,
     Collaborators.AYMERIC,
   ],
-  documents: [Doc.DEVIS_1],
+  // documents: [Doc.DEVIS_1],
 };
 
 export const F1_DISTRIBUTION: Client = {
@@ -73,5 +73,5 @@ export const F1_DISTRIBUTION: Client = {
     Collaborators.ELISE,
     Collaborators.AYMERIC,
   ],
-  documents: [Doc.CONTRACT_1, Doc.DEVIS_1],
+  // documents: [Doc.CONTRACT_1, Doc.DEVIS_1],
 };

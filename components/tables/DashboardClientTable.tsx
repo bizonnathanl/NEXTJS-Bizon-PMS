@@ -252,7 +252,10 @@ export function ClientDataTable({ rows }: DataTableProps) {
                 </tr>
 
                 {row.collaborators && expanded.has(idx) && (
-                  <tr className="flex w-full bg-white mb-2 rounded-md">
+                  <tr
+                    className={`flex w-full bg-white rounded-md ${
+                      isLast ? "mt-2 mb-0" : "mt-0 mb-2"
+                    }`}>
                     <td className="w-full px-4 py-3" colSpan={7}>
                       <div className="font-os text-sm">
                         <div className="flex items-center justify-between mb-2">

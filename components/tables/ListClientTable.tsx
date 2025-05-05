@@ -44,11 +44,11 @@ export interface ClientRowData {
   }>;
 }
 
-interface WarningClientRowData {
+interface ListClientRowData {
   rows: ClientRowData[];
 }
 
-export function WarningClientTable({ rows }: WarningClientRowData) {
+export function ListClientTable({ rows }: ListClientRowData) {
   const [expanded, setExpanded] = useState<Set<number>>(new Set());
   const [selections, setSelections] = useState<
     Record<"lead" | "types", string>
@@ -89,7 +89,6 @@ export function WarningClientTable({ rows }: WarningClientRowData) {
     };
   }, [rows]);
 
-  // Appliquer les filtres
   const filteredRows = useMemo(
     () =>
       rows.filter((row) => {
@@ -125,7 +124,6 @@ export function WarningClientTable({ rows }: WarningClientRowData) {
 
   return (
     <div className="overflow-x-auto">
-      {/* Filtres intégrés */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-4">
           {filters.map(({ label, defaultOption, key }) => (
