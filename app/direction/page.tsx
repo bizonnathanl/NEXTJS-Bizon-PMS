@@ -95,7 +95,6 @@ export default function DashboardPage() {
     { name: "Assistant", value: 14 },
   ];
 
-  // Données clients
   const ClientsRows: ClientRowData[] = [
     {
       name: "F1 Distribution",

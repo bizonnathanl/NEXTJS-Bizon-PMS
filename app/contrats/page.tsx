@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { ContractDataTable } from "@/components/tables/ListContractDataTable";
+import { ContractDataTable } from "@/components/tables/ListContractTable";
 import * as Documents from "@/data/Documents";
 
 export default function ContractsPage() {
@@ -18,7 +18,7 @@ export default function ContractsPage() {
         <PageHeader
           breadcrumbs={[{ label: "Contrats et devis" }]}
           title="Contrats et devis"
-          subtitle="Visualisez et détaillez vos contrats et devis."
+          subtitle="Visualisez et détaillez des contrats et devis de l'agence."
         />
         <ContractDataTable rows={docs} />
       </main>
